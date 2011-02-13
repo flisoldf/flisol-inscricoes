@@ -14,7 +14,11 @@ def index():
     example action using the internationalization operator T and flash
     rendered by views/default/index.html or views/generic.html
     """
-    response.flash = T('You are successfully running web2py.')
+    
+    if session.auth:
+        if auth.has_membership('Palestrante'):
+            redirect(URL('atividades','index',args=auth.user.id))
+    
     return dict(message=T('Hello World'))
 
 def user():
@@ -62,11 +66,12 @@ def user():
         # Capturando os dados do usuario logado
         id_user = session.auth.user.id
         form = SQLFORM(db.usuarios, id_user)
-    
+        
     else:       # Caso nao entrar nos casos acima passa o metodo padrao auth()
         form = auth()
         
     return dict(form=form)
+
 
 
 def download():
