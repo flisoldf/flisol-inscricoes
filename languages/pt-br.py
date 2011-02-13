@@ -102,4 +102,5 @@
 'state': 'state',
 'sucesso_login': 'Seu cadastro foi efetuado com sucesso!',
 'table': 'table',
+'usuario_ativ_invalido':'Você não possui permissão para visualizar essas atividades'
 }
