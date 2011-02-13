@@ -54,7 +54,7 @@ auth.settings.create_user_groups = False
 
 ### Carga inicial de grupos
 ### Caso os grupos nao foram cadastrados, sao inseridos automaticamente
-papeis = ('Administrador','Inscrito','Palestrante')
+papeis = ('Administrador','Participante','Palestrante')
 
 for papel in papeis:
     grupo = db(db.grupos.role == papel).select().first()
