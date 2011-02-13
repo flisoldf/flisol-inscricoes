@@ -262,6 +262,7 @@ atividade = db.define_table('atividades',
                 
 # Validadores - Tabela Atividades
 
+atividade.tag.writable=atividade.tag.readable=False # Oculatando as palavras chave, para uso posterior
 atividade.id_curriculo.writable=atividade.id_curriculo.readable=False
 atividade.nivel.requires = IS_IN_SET(['Básico', 'Intermediário', 'Avançado'], zero='Selecione...')
 atividade.id_sala.writable=atividade.id_sala.readable=False # Não permite a visualização nem edição do campo id_sala
