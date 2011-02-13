@@ -78,7 +78,7 @@
       {{try:}}
           {{ if session.auth: }}
             <span class="auth_navbar">
-              Bem vindo, {{=session.auth.user.name}}
+              Bem vindo, {{=session.auth.user.first_name}}
               [
               <a href="{{=URL('user',args=['logout'])}}">{{=T('logout')}}</a> | 
               <a href="{{=URL('user',args=['profile'])}}">{{=T('profile')}}</a> | 
