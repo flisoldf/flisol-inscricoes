@@ -121,6 +121,10 @@ body { font:13px/1.231 sans-serif; *font-size:small; } /* hack retained to prese
 
 select, input, textarea, button { font:99% sans-serif; }
 
+select {font-size: 120%; height: 25px;}
+
+.reference {font-size: 120%; height: 25px;}
+
 
 /* normalize monospace sizing 
  * en.wikipedia.org/wiki/MediaWiki_talk:Common.css/Archive_11#Teletype_style_fix_for_Chrome
@@ -132,7 +136,7 @@ pre, code, kbd, samp { font-family: monospace, sans-serif; }
  */
 
 /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
-body, select, input, textarea { color:#444; }
+body, select, input, textarea { color:#7F4C1A; }
 
 /* Headers (h1,h2,etc) have no default font-size or margin,
    you'll want to define those yourself. */ 
@@ -146,8 +150,10 @@ html { overflow-y: scroll; }
 /* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
 a:hover, a:active { outline: none; }
 
-a, a:active, a:visited { color:#607890; }
-a:hover { color:#036; }
+a, a:active, a:visited { color:#7F4C1A; }
+a:hover { color:#E58A2F; }
+
+img {border: 0;}
 
 ul, ol { margin-left: 1.8em; }
 ol { list-style-type: decimal; }
@@ -264,6 +270,7 @@ th, td { padding: 0.1em 0.5em 0.1em 0.5em;}
 /*********** labels bold and occasionally centered ***********/
 label {
     white-space: nowrap;
+    font-size: 14px;
 }
 label, b, th {
     font-weight: bold;
@@ -293,19 +300,19 @@ blockquote {
 }
 
 input[type=text], input[type=password], textarea, select {
-    margin: 2px 15px 2px 5px;
+    margin: 2px 15px 3px 5px;
     width: 280px;      
     background: #fff;
-    color: #555;
+    color: #40260D;
     border: 1px solid #dedede; 
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;       
-    font-size: 12px;
+    -moz-border-radius: 2.5px;
+    -webkit-border-radius: 2.5px;
+    border-radius: 2.5px;       
+    font-size: 14px;
 }
 
 input[type=text], input[type=password], select {
-    height: 16px;  
+    height: 18px;  
 }
 
 select[multiple=multiple] {
@@ -347,7 +354,7 @@ h6 {font-size: 0.8em;}
 /*body {background-color: #000;}*/
 #container, #header, #page, #content, #statusbar,
 #footer, #wrapper { display:block; line-height: 170%; }
-#wrapper {width: 900px;}
+#wrapper {/* width: 900px; */ width: auto;}
 #container {
     margin: 0 auto;
     padding: 0;
@@ -355,18 +362,23 @@ h6 {font-size: 0.8em;}
 #wrapper {margin: 0 auto;} 
 #wrapper {background-color: #fff; padding: 5px;} 
 #statusbar { margin: 5px 0px 20px 0px;}
-#footer {    
-    margin-top: 30px;    
-    padding: 5px;    
+#footer {
+    margin-top: 30px;
+    padding: 5px;
 }
+
+#footer span {font-size: 85%;}
+
 #statusbar, #footer {    
-    background: #eaeaea; 
-    border-top: 1px #aaa solid;    
+    background: #ffb890; 
+    /* border-top: 1px #40260D solid; */
 }
+
+#logo h1 { display: none; }
 #logo {
-    width: 68px;
-    height: 62px;
-    background: url(../images/logo.png);
+    width: 213px;
+    height: 88px;
+    background: url(../images/logo_flisol.png);
 }
 
 #right_sidebar { width: 160px; float:right; display: none; }
@@ -390,10 +402,10 @@ div.flash {
     min-width: 280px;
     opacity: 0.85;
     margin: 0px 0px 10px 10px;    
-    color: #fff;    
+    color: #7F4C1A;    
     vertical-align: middle;
     cursor: pointer;
-    background: #000;
+    background: #ffb890;
     border: 2px solid #fff;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -410,6 +422,21 @@ div.error {
  */
 
 
+/* Login */
+#web2py_user_form { padding-top: 60px;}
+#web2py_user_form input {
+    font-size: 160%;
+    height: 25px;
+}
+
+#web2py_user_form label {
+    font-size: 140%;
+}
+
+#web2py_user_form input[type="submit"] {
+    width: 120px;
+    height: 35px;
+}
 
 /*
  * Media queries for responsive design
