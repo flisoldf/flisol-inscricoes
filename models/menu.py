@@ -27,7 +27,7 @@ if 'auth' in globals():
         if auth.has_membership('Palestrante'):
             response.menu = [
                 (T('Home'), False, URL(request.application,'default','index'), []),
-                (T('Atividades'), False, URL(request.application,'default','index'), []),
+                (T('Atividades'), False, URL(request.application,'atividades','nova'), []),
                 ]
         if auth.has_membership('Participante'):
                     response.menu = [
