@@ -2,8 +2,7 @@
 <html lang="{{=T.accepted_language or 'en'}}" class="no-js"><!-- no-js need it for modernzr -->
   <head>
     
-    <meta charset="utf-8" />	  	
-    <!-- www.phpied.com/conditional-comments-block-downloads/ -->
+    <meta charset="utf-8" />
     <!--[if IE]><![endif]-->    
     <!-- Always force latest IE rendering engine 
 	 (even in intranet) & Chrome Frame 
@@ -72,29 +71,52 @@
     
     <div id="container">	      		      	
       
-      <div id="wrapper">		
-	
-	<div id="header"> <!-- header and login nav -->
-	  {{block header}} <!-- this is default header -->
-	  {{try:}}{{=auth.navbar(action=URL('default','user'))}}{{except:pass}}		          
-	  <div id="logo"><!-- put your logo here --></div>
-	  <div style="clear: both;"></div><!-- Clear the divs -->
-	  {{end}}				  					  
-	</div><!-- header  -->
-	
-	<div id="statusbar"><!-- statusbar is menu zone -->
-	  {{block statusbar}} <!-- this is default statusbar -->
-	  {{#------ superfish menu ------}}
-	  {{=MENU(response.menu,_class='sf-menu')}}
-	  <script type="text/javascript">
-	    jQuery(document).ready(function(){
-	    jQuery('ul.sf-menu').superfish();});
-	  </script>
-	  <div style="clear: both;"></div><!-- Clear the divs -->	
-	  {{end}}				
-	</div><!-- statusbar -->
-	
-	<div id="page"> <!-- Here my central body -->	  
+      <div id="wrapper">        
+    
+    <div id="header"> <!-- header and login nav -->
+      {{block header}} <!-- this is default header -->
+      {{try:}}
+          {{ if session.auth: }}
+            <span class="auth_navbar">
+              Bem vindo, {{=session.auth.user.name}}
+              [
+              <a href="{{=URL('user',args=['logout'])}}">{{=T('logout')}}</a> | 
+              <a href="{{=URL('user',args=['profile'])}}">{{=T('profile')}}</a> | 
+              <a href="{{=URL('user',args=['change_password'])}}">{{=T('password')}}</a>        
+              ]
+            </span>
+          {{ else: }}
+            <span class="auth_navbar">
+              [
+              <a href="{{=URL('user',args=['login'])}}">{{=T('login')}}</a> | 
+              <a href="{{=URL('user',args=['register'])}}">{{=T('register')}}</a> | 
+              <a href="{{=URL('user',args=['retrieve_password'])}}">{{=T('lost password?')}}</a>        
+              ]
+            </span>              
+          {{ pass }}        
+      {{except:pass}}               
+      <div id="logo">
+        <a href="{{=URL(request.application,'default','index')}}">
+            <h1>FLISOL-DF 2001</h1>
+        </a>        
+      </div>
+      <div style="clear: both;"></div><!-- Clear the divs -->
+      {{end}}                                     
+    </div><!-- header  -->
+    
+    <div id="statusbar"><!-- statusbar is menu zone -->
+      {{block statusbar}} <!-- this is default statusbar -->
+      {{#------ superfish menu ------}}
+      {{=MENU(response.menu,_class='sf-menu')}}
+      <script type="text/javascript">
+        jQuery(document).ready(function(){
+        jQuery('ul.sf-menu').superfish();});
+      </script>
+      <div style="clear: both;"></div><!-- Clear the divs -->   
+      {{end}}               
+    </div><!-- statusbar -->
+    
+    <div id="page"> <!-- Here my central body -->     
 
 	  {{if left_sidebar_enabled:}}
           <div id="left_sidebar" {{=XML(left_sidebar_style)}} >
@@ -125,10 +147,11 @@
 	
 	<div id="footer">
 	  {{block footer}} <!-- this is default footer -->
-	  <a href="http://www.web2py.com/" style="float: left; padding-right: 6px;">
-	    <img src="{{=URL('static','images/poweredby.png')}}"/>
-	  </a>
-	  {{=T('Copyright')}} &#169; 2010				
+	    <center>
+	      <a href="http://www.web2py.com/"><img src="{{=URL('static','images/poweredby.png')}}"  style="padding-bottom: 3px;"/></a>
+	      <br />	      
+	      <span>{{=T('Copyleft')}} - 2011</span>
+	    </center>
 	  <div style="clear: both;"></div><!-- Clear the divs -->
 	  {{end}}
 
