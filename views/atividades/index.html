@@ -3,5 +3,9 @@
 {{if ativ:}}
 	{{=ativ}}
 {{else:}}
-	<center><h2>{{=T('usuario_ativ_invalido')}}</h2></center>
+	{{if session.auth.user.id != id_user:}}
+		<center><h2>{{=T('usuario_ativ_invalido')}}</h2></center>
+	{{else:}}
+		<center><h2>Você não tem atividades cadastradas!</h2></center>
+	{{pass}}
 {{pass}}
