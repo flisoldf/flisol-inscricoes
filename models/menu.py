@@ -29,7 +29,7 @@ if 'auth' in globals():
                 (T('Home'), False, URL(request.application,'default','index'), []),
                 (T('Atividades'), False, URL(request.application,'default','index'), []),
                 ]
-        if auth.has_membership('Inscrito'):
+        if auth.has_membership('Participante'):
                     response.menu = [
                         (T('Home'), False, URL(request.application,'default','index'), []),
                         (T('Atividades Inscritas'), False, URL(request.application,'default','index'), []),
