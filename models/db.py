@@ -151,4 +151,124 @@ if 'auth' in globals():
         custom_auth_table.grupo.requires = IS_IN_DB(db(db.grupos.role != 'Administrador'),
             'grupos.id', 'grupos.role', zero=T('escolha_grupo'), error_message=T('is_choose'))        
 
+###########################################
+# Tabela de Tipos de Atividades           #
+###########################################
+"""
+Define o tipo de atividade que o palestrante irá ministrar (Palestra, Mini-Curso, Install Fest, etc.)
+"""
+
+tipo_atividade = db.define_table('tipo_atividade',
+                Field('tipo'),
+                Field('ativo', 'boolean', default=True),
+                format='%(tipo)s')
+
+###########################################
+# Tabela das Salas                        #
+###########################################
+"""
+Define as salas e a quantidade de lugares disponíveis em cada uma
+"""
+sala = db.define_table('sala',
+                       Field('nome', default='sala'),
+                       Field('lugares', 'integer'))
+
+# Validação dos dados da tabela sala
+sala.nome.requires = IS_NOT_EMPTY(error_message='Digite um nome')
+sala.lugares.requires = IS_NOT_EMPTY(error_message='Informe a quantidade de lugares disponíveis na sala')
+
+# Validação da tabela tipo_atividade
+tipo_atividade.tipo.requires = [
+                                IS_NOT_EMPTY(error_message='Tipos: Mini-Curso, Palestra...'),
+                                IS_NOT_IN_DB(db, 'tipo_atividade.tipo')
+                                ]
+
+
+###########################################
+# Tabela de Materiais                     #
+###########################################
+"""
+Define a tabela de materiais necessários para o palestrante (Computador, datashow, internet, etc.)
+"""
+
+
+materiais = db.define_table('materiais',
+                Field('nome'),
+                Field('ativo', 'boolean', default=True),
+                format='%(nome)s')
+
+# Validação da tabela Materiais
+materiais.nome.requires = [
+                           IS_NOT_EMPTY(error_message='Materiais: DataShow, Computador, Internet...'),
+                           IS_NOT_IN_DB(db, 'materiais.nome')
+                           ]
+
+
+###########################################
+# Tabela Duração da Atividade             #
+###########################################
+
+duracao = db.define_table('duracao',
+                          Field('duracao', 'integer'),
+                          Field('desc',),
+                          format='%(duracao)s %(desc)s')
+
+# Validação da tabela duracao
+duracao.duracao.requires = [
+                            IS_NOT_EMPTY(error_message='Digite a duração da atividade: 1, 2, ..., 8'),
+                            IS_NOT_IN_DB(db, 'duracao.desc')
+                            ]
+
+duracao.desc.requires = IS_NOT_EMPTY(error_message='Digite a descrição: Horas, Minutos...')
+                
+###########################################
+# Tabela Mini-Curriculo                   #
+###########################################
+"""
+Define a Tabela Mini-Currículo do Palestrante
+"""
+
+
+curriculo = db.define_table('curriculo',
+                Field('id_usuario', 'integer'),
+                Field('mini_curriculo', 'text'))
+             
+# Validadores - Tabela Mini-Currículo
+curriculo.id_usuario.writable=curriculo.id_usuario.readable=False
+""" Incluir validador no controller para não permitir mais de um cadastro por palestrante"""
+
+                
+###########################################
+# Tabela de Atividades                    #
+###########################################
+"""
+Tabela para inserção de atividades pelo palestrante
+"""
+
+atividade = db.define_table('atividades',
+                Field('id_usuario', 'integer'),
+                Field('id_sala', 'integer'),
+                Field('id_curriculo', 'integer'),
+                Field('titulo'), # Título da atividade
+                Field('descricao', 'text'), # Descrição da atividade
+                Field('nivel', 'list:string'),
+                Field('tipo', tipo_atividade), # Tipo da atividade: Palestra, Mini-Curso, etc.
+                Field('duracao', duracao), # Duração da atividade (em horas)
+                Field('tag', label='Palavras-Chave'), # Tags
+                Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
+                Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
+                      label='Precisa de algum desses materiais?'),
+                Field('status', 'integer', default=2)) # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente
+                
+# Validadores - Tabela Atividades
+
+atividade.id_curriculo.writable=atividade.id_curriculo.readable=False
+atividade.nivel.requires = IS_IN_SET(['Básico', 'Intermediário', 'Avançado'], zero='Selecione...')
+atividade.id_sala.writable=atividade.id_sala.readable=False # Não permite a visualização nem edição do campo id_sala
+atividade.titulo.requires = IS_NOT_EMPTY(error_message='Digite um valor')
+atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...') # Preenche a lista tipo atividade
+atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(desc)s', zero='Selecione...')
+atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
+atividade.status.writable=atividade.status.readable=False # Não permite a visualização nem edição do status da palestra
+
 crud.settings.auth = None                      # força autorizacao no CRUD
