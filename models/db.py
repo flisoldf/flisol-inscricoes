@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+from gluon.utils import hash
+
 #########################################################################
 ## Preparando o ambiente para GAE ou não
 #########################################################################
@@ -61,11 +64,12 @@ for papel in papeis:
     if not grupo:
         db.grupos.insert(role=papel,description='Grupo tipo %s'%papel)
 
+
 ### Tabela usuarios (customizado)
 
 usuarios = db.define_table(
     auth.settings.table_user_name,
-    Field('name', length=128, default=''),
+    Field('first_name', length=128, default=''),
     Field('username', length = 128, default = '', unique = True),
     Field('email', length=128, default=''),
     Field('password', 'password', length=512,
@@ -81,7 +85,7 @@ usuarios = db.define_table(
 
 # Validacao dos campos
 custom_auth_table = usuarios
-custom_auth_table.name.requires = IS_NOT_EMPTY(error_message= T('is_empty'))
+custom_auth_table.first_name.requires = IS_NOT_EMPTY(error_message= T('is_empty'))
 custom_auth_table.username.requires = [
             IS_NOT_EMPTY(error_message = T('is_empty')),
             IS_NOT_IN_DB(db, custom_auth_table.username, T('login_already'))]
@@ -92,11 +96,9 @@ custom_auth_table.password.requires = [
             # caracteres em maiusculo = 0 (nenhum)
             IS_STRONG(min = 6, special = 0, upper = 0, invalid=' "', error_message = T('error_password')),CRYPT()]
 custom_auth_table.email.requires = [IS_EMAIL(error_message=auth.messages.invalid_email)]
-custom_auth_table.grupo.requires = IS_IN_DB(db(db.grupos.role != 'Administrador'),
-    'grupos.id', 'grupos.role', zero=T('escolha_grupo'), error_message=T('is_choose'))
-
+            
 # Rotulo dos campos
-custom_auth_table.name.label = T('Name')
+custom_auth_table.first_name.label = T('Name')
 custom_auth_table.username.label = T('Username')
 custom_auth_table.email.label = T('Email')
 custom_auth_table.password.label = T('Password')
@@ -112,5 +114,41 @@ auth.settings.registration_requires_approval = False
 
 # Traduzindo o rotulo do campo Submit
 auth.messages.submit_button = T('Submit')
+
+### Carga inicial para criacao do Administrador
+admin  = {
+    'name':'Administrator',
+    'username':'admin',
+    'password':'admin123',
+    'email':'admin@mail.com',
+    'grupo':'1',    # ID do grupo Administrador (caso for outro, altere)
+}
+
+# Caso nao existir
+user_admin = db(db.usuarios.username == admin['username']).select().first()
+if not user_admin:
+    id_user = db.usuarios.insert(
+        first_name = admin['name'],
+        username = admin['username'],
+        email = admin['email'],
+        password = hash(admin['password'], 'md5'), # Convertendo a senha no formado MD5
+        grupo = admin['grupo']
+    )
+    db.commit()
+    db.relacionamento.insert(user_id = id_user,group_id = 1)
+    db.commit()
+
+
+### Se o usuario for Administrador, ele pode querer adicionar outro Administrador.
+### Com isso tem que verificar se o usuario logado tem permissoes para isso, ou seja
+### participa do grupo Administrador
+if 'auth' in globals():
+    if session.auth:    
+        if auth.has_membership('Administrador'):
+            custom_auth_table.grupo.requires = IS_IN_DB(db,'grupos.id', 'grupos.role',
+                zero=T('escolha_grupo'), error_message=T('is_choose'))
+    else:
+        custom_auth_table.grupo.requires = IS_IN_DB(db(db.grupos.role != 'Administrador'),
+            'grupos.id', 'grupos.role', zero=T('escolha_grupo'), error_message=T('is_choose'))        
 
 crud.settings.auth = None                      # força autorizacao no CRUD
