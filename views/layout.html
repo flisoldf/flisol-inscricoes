@@ -80,17 +80,17 @@
             <span class="auth_navbar">
               Bem vindo, {{=session.auth.user.first_name}}
               [
-              <a href="{{=URL('user',args=['logout'])}}">{{=T('logout')}}</a> | 
-              <a href="{{=URL('user',args=['profile'])}}">{{=T('profile')}}</a> | 
-              <a href="{{=URL('user',args=['change_password'])}}">{{=T('password')}}</a>        
+              <a href="{{=URL('default','user',args=['logout'])}}">{{=T('logout')}}</a> | 
+              <a href="{{=URL('default','user',args=['profile'])}}">{{=T('profile')}}</a> | 
+              <a href="{{=URL('default','user',args=['change_password'])}}">{{=T('password')}}</a>        
               ]
             </span>
           {{ else: }}
             <span class="auth_navbar">
               [
-              <a href="{{=URL('user',args=['login'])}}">{{=T('login')}}</a> | 
-              <a href="{{=URL('user',args=['register'])}}">{{=T('register')}}</a> | 
-              <a href="{{=URL('user',args=['retrieve_password'])}}">{{=T('lost password?')}}</a>        
+              <a href="{{=URL('default','user',args=['login'])}}">{{=T('login')}}</a> | 
+              <a href="{{=URL('default','user',args=['register'])}}">{{=T('register')}}</a> | 
+              <a href="{{=URL('default','user',args=['retrieve_password'])}}">{{=T('lost password?')}}</a>        
               ]
             </span>              
           {{ pass }}        
