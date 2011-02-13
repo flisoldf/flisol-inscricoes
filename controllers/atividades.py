@@ -9,9 +9,9 @@ def index():
     id_user = str(session.auth.user.id)
     if palestrante == id_user:
         ativ = db(atividade.id_usuario==palestrante).select()
-        return dict(ativ=ativ)
+        return dict(ativ=ativ, id_user=int(palestrante))
     else:
-        return dict(ativ=None)
+        return dict(ativ=None, id_user=int(palestrante))
 
 
 
