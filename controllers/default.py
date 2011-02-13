@@ -31,7 +31,42 @@ def user():
         @auth.requires_permission('read','table name',record_id)
     to decorate functions that need access control
     """
-    return dict(form=auth())
+    
+    # Caso estiver no formulario de registro
+    # cria o formulario de cadastro
+    if request.args(0) == 'register':
+        form = SQLFORM(db.usuarios)
+        
+        # Se o cadastro foi efetuado com sucesso
+        # Vincule ao grupo selecionado
+        if form.accepts(request.vars, session):
+            # Consulta o usuario registrado a partir do username
+            user = db(db.usuarios.username == request.vars.username).select().first()
+            id_group = request.vars.grupo
+            print user.id
+            print id_group
+            auth.add_membership(id_group, user.id)
+
+            # Redireciona para a home
+            response.view = 'default/index.html'
+
+            # Exibe mensagem de sucesso
+            response.flash = T('sucesso_login')
+    
+    elif request.args(0) == 'profile':      # Se esta no perfil do usuario, captura os seus dados para editar caso for necessário.
+        # Ocultando os campos ID e PERFIL
+        db.usuarios.id.readable = False
+        db.usuarios.grupo.readable = \
+        db.usuarios.grupo.writable = False
+        
+        # Capturando os dados do usuario logado
+        id_user = session.auth.user.id
+        form = SQLFORM(db.usuarios, id_user)
+    
+    else:       # Caso nao entrar nos casos acima passa o metodo padrao auth()
+        form = auth()
+        
+    return dict(form=form)
 
 
 def download():
