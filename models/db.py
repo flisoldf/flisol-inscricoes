@@ -235,8 +235,8 @@ curriculo = db.define_table('curriculo',
              
 # Validadores - Tabela Mini-Currículo
 curriculo.id_usuario.writable=curriculo.id_usuario.readable=False
-""" Incluir validador no controller para não permitir mais de um cadastro por palestrante"""
-
+curriculo.id.writable=curriculo.id.readable=False
+curriculo.mini_curriculo.requires = IS_NOT_EMPTY(error_message='Preenchimento obrigatório!')
                 
 ###########################################
 # Tabela de Atividades                    #
