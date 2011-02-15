@@ -30,6 +30,7 @@
 'Logged out': 'Desconectado',
 'Login': 'Login',
 'Logout': 'Logout',
+'Mini-Currículo': 'Mini-Currículo',
 'Name': 'Nome',
 'New Record': 'Novo Registro',
 'New password': 'Nova senha',
