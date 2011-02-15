@@ -28,7 +28,7 @@ if 'auth' in globals():
             response.menu = [
                 (T('Home'), False, URL(request.application,'default','index'), []),
                 (T('Atividades'), False, URL(request.application,'atividades','nova'), []),
-                (T('Mini-Currículo'), False, URL(request.application, 'atividades', 'curriculo'), [])
+                (T('Mini-Currículo'), False, URL(request.application, 'atividades', 'minicurriculo'), [])
                 ]
         if auth.has_membership('Participante'):
                     response.menu = [
