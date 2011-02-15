@@ -18,8 +18,10 @@ def index():
     if session.auth:
         if auth.has_membership('Palestrante'):
             redirect(URL('atividades','index',args=auth.user.id))
+    else:
+        redirect(URL('default','user',args='register'))
     
-    return dict(message=T('Hello World'))
+    return dict()
 
 def user():
     """
