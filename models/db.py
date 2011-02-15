@@ -112,6 +112,9 @@ auth.settings.mailer = mail                    # para verificação de email
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 
+# Após registro, direcionar usuário para tela de login
+auth.settings.register_next = URL('user', args='login')
+
 # Traduzindo o rotulo do campo Submit
 auth.messages.submit_button = T('Submit')
 
