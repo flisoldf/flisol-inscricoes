@@ -41,6 +41,7 @@ auth.settings.table_membership_name = 'relacionamento'
 auth.settings.table_permission_name = 'autorizacao'
 auth.settings.table_event_name = 'eventos'
 
+
 ### Tabela grupos (customizado)
 grupos = db.define_table(
     auth.settings.table_group_name,
@@ -111,9 +112,6 @@ auth.settings.mailer = mail                    # para verificação de email
 # Habilitando verificacao de senha e desabilitando aprovacao de cadastro
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
-
-# Após registro, direcionar usuário para tela de login
-auth.settings.register_next = URL('user', args='login')
 
 # Traduzindo o rotulo do campo Submit
 auth.messages.submit_button = T('Submit')
@@ -238,8 +236,8 @@ curriculo = db.define_table('curriculo',
              
 # Validadores - Tabela Mini-Currículo
 curriculo.id_usuario.writable=curriculo.id_usuario.readable=False
-curriculo.id.writable=curriculo.id.readable=False
-curriculo.mini_curriculo.requires = IS_NOT_EMPTY(error_message='Preenchimento obrigatório!')
+""" Incluir validador no controller para não permitir mais de um cadastro por palestrante"""
+
                 
 ###########################################
 # Tabela de Atividades                    #
@@ -261,13 +259,17 @@ atividade = db.define_table('atividades',
                 Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
                 Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
                       label='Precisa de algum desses materiais?'),
-                Field('status', 'integer', default=2)) # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente
+                Field('status', 'integer', default=2)) # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente               
                 
 # Validadores - Tabela Atividades
 
 atividade.tag.writable=atividade.tag.readable=False # Oculatando as palavras chave, para uso posterior
 atividade.id_curriculo.writable=atividade.id_curriculo.readable=False
-atividade.nivel.requires = IS_IN_SET(['Básico', 'Intermediário', 'Avançado'], zero='Selecione...')
+
+# Criando um dicionario para armazenar os níveis
+levels = ['Básico','Intermediário','Avançado']
+atividade.nivel.requires = IS_IN_SET(levels, zero='Selecione...')
+
 atividade.id_sala.writable=atividade.id_sala.readable=False # Não permite a visualização nem edição do campo id_sala
 atividade.titulo.requires = IS_NOT_EMPTY(error_message='Digite um valor')
 atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...') # Preenche a lista tipo atividade
