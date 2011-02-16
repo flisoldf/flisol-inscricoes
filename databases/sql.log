@@ -1,11 +1,11 @@
-timestamp: 2011-02-16T13:24:23.240995
+timestamp: 2011-02-16T13:39:16.400906
 CREATE TABLE grupos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     role CHAR(128),
     description CHAR(128)
 );
 success!
-timestamp: 2011-02-16T13:24:23.248713
+timestamp: 2011-02-16T13:39:16.405766
 CREATE TABLE usuarios(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name CHAR(128),
@@ -18,14 +18,14 @@ CREATE TABLE usuarios(
     registration_id CHAR(512)
 );
 success!
-timestamp: 2011-02-16T13:24:23.252053
+timestamp: 2011-02-16T13:39:16.408753
 CREATE TABLE relacionamento(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
     group_id INTEGER REFERENCES grupos(id) ON DELETE CASCADE
 );
 success!
-timestamp: 2011-02-16T13:24:23.254743
+timestamp: 2011-02-16T13:39:16.411246
 CREATE TABLE autorizacao(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     group_id INTEGER REFERENCES grupos(id) ON DELETE CASCADE,
@@ -34,7 +34,7 @@ CREATE TABLE autorizacao(
     record_id INTEGER
 );
 success!
-timestamp: 2011-02-16T13:24:23.258501
+timestamp: 2011-02-16T13:39:16.413953
 CREATE TABLE eventos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     time_stamp TIMESTAMP,
@@ -44,42 +44,42 @@ CREATE TABLE eventos(
     description TEXT
 );
 success!
-timestamp: 2011-02-16T13:24:23.265085
+timestamp: 2011-02-16T13:39:16.422194
 CREATE TABLE tipo_atividade(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tipo CHAR(512),
     ativo CHAR(1)
 );
 success!
-timestamp: 2011-02-16T13:24:23.267540
+timestamp: 2011-02-16T13:39:16.425101
 CREATE TABLE sala(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome CHAR(512),
     lugares INTEGER
 );
 success!
-timestamp: 2011-02-16T13:24:23.270599
+timestamp: 2011-02-16T13:39:16.430756
 CREATE TABLE materiais(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome CHAR(512),
     ativo CHAR(1)
 );
 success!
-timestamp: 2011-02-16T13:24:23.274231
+timestamp: 2011-02-16T13:39:16.435688
 CREATE TABLE duracao(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     duracao INTEGER,
     desc CHAR(512)
 );
 success!
-timestamp: 2011-02-16T13:24:23.280830
+timestamp: 2011-02-16T13:39:16.440196
 CREATE TABLE curriculo(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_usuario INTEGER,
     mini_curriculo TEXT
 );
 success!
-timestamp: 2011-02-16T13:24:23.284964
+timestamp: 2011-02-16T13:39:16.445298
 CREATE TABLE atividades(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_usuario INTEGER,
