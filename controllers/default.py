@@ -57,7 +57,7 @@ def user():
             response.flash = T('sucesso_login')
 
             # Redireciona para o login
-            redirect(URL('user',args['login']))
+            redirect(URL('user',args=['login']))
     
     elif request.args(0) == 'profile':      # Se esta no perfil do usuario, captura os seus dados para editar caso for necessário.
         # Ocultando os campos ID e PERFIL
