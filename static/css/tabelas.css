@@ -1,0 +1,102 @@
+/* 
+Style: OrangeYouGlad.css
+Created by Randy Peterman, September 2nd, 2005
+http://design.randypeterman.com
+using TopStyle Pro 3.12
+
+Requires one image: down_arrow.gif for {mostly} 
+Standards Compliant browsers like Firefox.
+*/
+table.tabela{
+    background: #FFEFD5;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    width: 100%;
+}
+.tabela caption{
+    width: 100%;
+    text-align: left;
+    font-weight: bolder;
+    border-top: 4px double #bbb;
+}
+.tabela table *{
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+.tabela thead{
+    background: #FFB890;
+    font-size: 120%;
+}
+.tabela thead * th{
+    border-bottom: 1px outset;
+    border-top: 1px outset;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.tabela tfoot{
+    background: #FFA109;
+}
+
+.tabela table * a{
+    color: #000;
+}
+.tabela tbody * th{
+    background: #FFDCA2;
+    border-right: 1px solid #956500 !important;
+    border-bottom: 1px solid #fff;
+    font-size: medium;
+    font-weight: normal;
+    padding-left: 2px;
+    padding-bottom: 4px;
+    text-align: left;
+    vertical-align: top;
+    text-align: center;    
+}
+.tabela tbody * th a{
+        color: blue !important;
+}
+.tabela tbody * td{
+    border: 0px none;
+    border-bottom: 1px solid #ddd;
+    padding-left: 3px;
+    text-align: left;
+    vertical-align: top;
+    text-align: center;
+}
+.tabela tbody tr.odd{
+    background: #FFF8EA;
+}
+.tabela tbody tr.odd th{
+    background: #FFE2B0;
+}
+.tabela tfoot tr td[colspan='4']{
+    text-align: right;
+    font-style: italic;
+    padding-right: 4px;
+}
+.tabela tbody td a{
+    background: url(down_arrow.gif) no-repeat;
+    background-position: top left;
+    min-height: 20px;
+    padding-left: 20px;
+    padding-right: 4px;
+    text-align: center;
+}
+.tabela tbody tr th+td a{
+    background-image: none;
+    padding: inherit;
+    float: inherit;
+}
+/* Fake for IE, argh! Maybe IE 7 will resolve this. */
+.tabela tbody td a{
+    _background: none;
+    _background-position: inherit;
+    _padding-left: 2px;
+    _float: inherit;
+    _padding-right: inherit;
+    _text-align: center;
+}
+.tabela tfoot * th{
+    border-bottom: 1px outset;
+    border-top: 1px outset;
+}
