@@ -3,6 +3,9 @@
 
 @auth.requires_membership('Palestrante')
 def index():
+    """
+    Exibe a lista de atividades submetidas
+    """
     # Se não houver argumentos na URL, redireciona para a página inicial
     # O objetivo dessa verificação é não permitir que um palestrante visualize atividades de outro
     if not request.args:
@@ -10,12 +13,21 @@ def index():
     palestrante = request.args(0)
     id_user = str(session.auth.user.id)
     
-    # Verifica se o argumento passado na URL é o mesmo da sessão do usuário
-    if palestrante == id_user:
-        ativ = db(atividade.id_usuario==palestrante).select()
-        return dict(ativ=ativ, id_user=int(palestrante))
+    # Faz a consulta no banco de dados para pegar o id do currículo do palestrante
+    curriculo_id = db(curriculo.id_usuario==session.auth.user.id).select().first()
+    
+    # Caso nao cadastrou o curriculo, redireciona para o cadastro
+    print curriculo_id
+    if curriculo_id:
+        # Verifica se o argumento passado na URL é o mesmo da sessão do usuário
+        if palestrante == id_user:
+            ativ = db(atividade.id_usuario==palestrante).select()
+            return dict(ativ=ativ, id_user=int(palestrante))
+        else:
+            return dict(ativ=None, id_user=int(palestrante))        
     else:
-        return dict(ativ=None, id_user=int(palestrante))
+        session.flash = "Escreva o seu mini-curriculo antes de cadastrar sua palestra."
+        redirect(URL('atividades', 'minicurriculo'))
 
 
 
@@ -64,6 +76,8 @@ def minicurriculo():
     
     # Se houver mini-currículo cadastrado, retorna o formulário para atualização
     if minicurriculo:
+        # Ocultando o ID
+        db.curriculo.id.readable = db.curriculo.id.writable = False
         form = SQLFORM(curriculo, atualizar)
         form.vars.id_usuario = id_user
         
