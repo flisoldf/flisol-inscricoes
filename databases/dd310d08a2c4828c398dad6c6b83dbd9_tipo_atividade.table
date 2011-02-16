@@ -1,0 +1,14 @@
+(dp1
+S'ativo'
+p2
+S'CHAR(1)'
+p3
+sS'id'
+p4
+S'INTEGER PRIMARY KEY AUTOINCREMENT'
+p5
+sS'tipo'
+p6
+S'CHAR(512)'
+p7
+s.

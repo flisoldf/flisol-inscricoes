@@ -1,55 +1,11 @@
-timestamp: 2011-02-03T21:27:53.266729
-CREATE TABLE auth_user(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_name CHAR(128),
-    last_name CHAR(128),
-    email CHAR(512),
-    password CHAR(512),
-    registration_key CHAR(512),
-    reset_password_key CHAR(512)
-);
-success!
-timestamp: 2011-02-03T21:27:53.269265
-CREATE TABLE auth_group(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    role CHAR(512),
-    description TEXT
-);
-success!
-timestamp: 2011-02-03T21:27:53.271624
-CREATE TABLE auth_membership(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
-    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE
-);
-success!
-timestamp: 2011-02-03T21:27:53.274161
-CREATE TABLE auth_permission(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    group_id INTEGER REFERENCES auth_group(id) ON DELETE CASCADE,
-    name CHAR(512),
-    table_name CHAR(512),
-    record_id INTEGER
-);
-success!
-timestamp: 2011-02-03T21:27:53.276795
-CREATE TABLE auth_event(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    time_stamp TIMESTAMP,
-    client_ip CHAR(512),
-    user_id INTEGER REFERENCES auth_user(id) ON DELETE CASCADE,
-    origin CHAR(512),
-    description TEXT
-);
-success!
-timestamp: 2011-02-16T12:28:05.074657
+timestamp: 2011-02-16T13:24:23.240995
 CREATE TABLE grupos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     role CHAR(128),
     description CHAR(128)
 );
 success!
-timestamp: 2011-02-16T12:28:05.083161
+timestamp: 2011-02-16T13:24:23.248713
 CREATE TABLE usuarios(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name CHAR(128),
@@ -62,14 +18,14 @@ CREATE TABLE usuarios(
     registration_id CHAR(512)
 );
 success!
-timestamp: 2011-02-16T12:28:05.087274
+timestamp: 2011-02-16T13:24:23.252053
 CREATE TABLE relacionamento(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
     group_id INTEGER REFERENCES grupos(id) ON DELETE CASCADE
 );
 success!
-timestamp: 2011-02-16T12:28:05.090698
+timestamp: 2011-02-16T13:24:23.254743
 CREATE TABLE autorizacao(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     group_id INTEGER REFERENCES grupos(id) ON DELETE CASCADE,
@@ -78,7 +34,7 @@ CREATE TABLE autorizacao(
     record_id INTEGER
 );
 success!
-timestamp: 2011-02-16T12:28:05.094157
+timestamp: 2011-02-16T13:24:23.258501
 CREATE TABLE eventos(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     time_stamp TIMESTAMP,
@@ -88,42 +44,42 @@ CREATE TABLE eventos(
     description TEXT
 );
 success!
-timestamp: 2011-02-16T12:28:05.101045
+timestamp: 2011-02-16T13:24:23.265085
 CREATE TABLE tipo_atividade(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     tipo CHAR(512),
     ativo CHAR(1)
 );
 success!
-timestamp: 2011-02-16T12:28:05.103652
+timestamp: 2011-02-16T13:24:23.267540
 CREATE TABLE sala(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome CHAR(512),
     lugares INTEGER
 );
 success!
-timestamp: 2011-02-16T12:28:05.106628
+timestamp: 2011-02-16T13:24:23.270599
 CREATE TABLE materiais(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome CHAR(512),
     ativo CHAR(1)
 );
 success!
-timestamp: 2011-02-16T12:28:05.113850
+timestamp: 2011-02-16T13:24:23.274231
 CREATE TABLE duracao(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     duracao INTEGER,
     desc CHAR(512)
 );
 success!
-timestamp: 2011-02-16T12:28:05.117864
+timestamp: 2011-02-16T13:24:23.280830
 CREATE TABLE curriculo(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_usuario INTEGER,
     mini_curriculo TEXT
 );
 success!
-timestamp: 2011-02-16T12:28:05.121911
+timestamp: 2011-02-16T13:24:23.284964
 CREATE TABLE atividades(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_usuario INTEGER,
