@@ -59,14 +59,19 @@ def user():
             redirect(URL('user',args=['login']))
     
     elif request.args(0) == 'profile':      # Se esta no perfil do usuario, captura os seus dados para editar caso for necessário.
-        # Ocultando os campos ID e PERFIL
+        # Ocultando os campos ID, PERFIL e SENHA
         db.usuarios.id.readable = False
         db.usuarios.grupo.readable = \
         db.usuarios.grupo.writable = False
+        db.usuarios.password.readable = \
+        db.usuarios.password.writable = False        
         
         # Capturando os dados do usuario logado
         id_user = session.auth.user.id
         form = SQLFORM(db.usuarios, id_user)
+        
+        if form.accepts(request.vars, session):
+            response.flash = 'Perfil atualizado com sucesso.'
         
     else:       # Caso nao entrar nos casos acima passa o metodo padrao auth()
         form = auth()
