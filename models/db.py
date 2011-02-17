@@ -16,6 +16,7 @@ if request.env.web2py_runtime_gae:            # Caso estiver executando o ambien
     session.connect(request, response, db = MEMDB(Client()))
 else:                                         # senao, use um banco de dados relacional
     db = DAL('sqlite://flisol_inscricao.sqlite')
+    # db = DAL('mysql://gilsonsbf_flisol:a0f04a56@localhost/gilsonsbf_flisol')
 
 ## Caso não precisar mais da sessão
 # session.forget()
@@ -55,16 +56,6 @@ custom_group_table.description.requires = IS_NOT_EMPTY(error_message = T('is_emp
 
 ### Desabilitando a criacao automatica de grupos
 auth.settings.create_user_groups = False
-
-### Carga inicial de grupos
-### Caso os grupos nao foram cadastrados, sao inseridos automaticamente
-papeis = ('Administrador','Participante','Palestrante')
-
-for papel in papeis:
-    grupo = db(db.grupos.role == papel).select().first()
-    if not grupo:
-        db.grupos.insert(role=papel,description='Grupo tipo %s'%papel)
-
 
 ### Tabela usuarios (customizado)
 
@@ -116,6 +107,15 @@ auth.settings.registration_requires_approval = False
 # Traduzindo o rotulo do campo Submit
 auth.messages.submit_button = T('Submit')
 
+### Carga inicial de grupos
+### Caso os grupos nao foram cadastrados, sao inseridos automaticamente
+papeis = ('Administrador','Participante','Palestrante')
+
+for papel in papeis:
+    grupo = db(db.grupos.role == papel).select().first()
+    if not grupo:
+        db.grupos.insert(role=papel,description='Grupo tipo %s'%papel)
+
 ### Carga inicial para criacao do Administrador
 admin  = {
     'name':'Administrator',
@@ -162,7 +162,7 @@ Define o tipo de atividade que o palestrante irá ministrar (Palestra, Mini-Curs
 tipo_atividade = db.define_table('tipo_atividade',
                 Field('tipo'),
                 Field('ativo', 'boolean', default=True),
-                format='%(tipo)s')
+                format='%(tipo)s',migrate=False)
 
 ###########################################
 # Tabela das Salas                        #
@@ -172,7 +172,7 @@ Define as salas e a quantidade de lugares disponíveis em cada uma
 """
 sala = db.define_table('sala',
                        Field('nome', default='sala'),
-                       Field('lugares', 'integer'))
+                       Field('lugares', 'integer'),migrate=False)
 
 # Validação dos dados da tabela sala
 sala.nome.requires = IS_NOT_EMPTY(error_message='Digite um nome')
@@ -196,7 +196,7 @@ Define a tabela de materiais necessários para o palestrante (Computador, datash
 materiais = db.define_table('materiais',
                 Field('nome'),
                 Field('ativo', 'boolean', default=True),
-                format='%(nome)s')
+                format='%(nome)s',migrate=False)
 
 # Validação da tabela Materiais
 materiais.nome.requires = [
@@ -211,8 +211,8 @@ materiais.nome.requires = [
 
 duracao = db.define_table('duracao',
                           Field('duracao', 'integer'),
-                          Field('desc',),
-                          format='%(duracao)s %(desc)s')
+                          Field('desc','string'),
+                          format='%(duracao)s %(desc)s',migrate=False)
 
 # Validação da tabela duracao
 duracao.duracao.requires = [
@@ -232,7 +232,8 @@ Define a Tabela Mini-Currículo do Palestrante
 
 curriculo = db.define_table('curriculo',
                 Field('id_usuario', 'integer'),
-                Field('mini_curriculo', 'text'))
+                Field('mini_curriculo', 'text'),
+                migrate=False)
              
 # Validadores - Tabela Mini-Currículo
 curriculo.id_usuario.writable=curriculo.id_usuario.readable=False
@@ -259,7 +260,8 @@ atividade = db.define_table('atividades',
                 Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
                 Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
                       label='Precisa de algum desses materiais?'),
-                Field('status', 'integer', default=2)) # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente               
+                Field('status', 'string', default='Pendente'),
+                format='%(titulo)',migrate=False) # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente               
                 
 # Validadores - Tabela Atividades
 
@@ -278,3 +280,4 @@ atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite
 atividade.status.writable=atividade.status.readable=False # Não permite a visualização nem edição do status da palestra
 
 crud.settings.auth = None                      # força autorizacao no CRUD
+
