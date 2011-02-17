@@ -26,8 +26,8 @@ if 'auth' in globals():
     else:    # Caso estiver logado exibe os menus de acordo com sua permissao
         if auth.has_membership('Palestrante'):
             response.menu = [
-                (T('Home'), False, URL(request.application,'default','index'), []),
-                (T('Atividades'), False, URL(request.application,'atividades','index'), []),
+                (T('Home'), False, URL(request.application,'atividades','index'), []),
+                (T('Atividades'), False, URL(request.application,'atividades','nova'), []),
                 (T('Mini-Currículo'), False, URL(request.application, 'atividades', 'minicurriculo'), [])
                 ]
         if auth.has_membership('Participante'):
