@@ -15,8 +15,8 @@ if request.env.web2py_runtime_gae:            # Caso estiver executando o ambien
     from google.appengine.api.memcache import Client
     session.connect(request, response, db = MEMDB(Client()))
 else:                                         # senao, use um banco de dados relacional
-    db = DAL('sqlite://flisol_inscricao.sqlite')
-    # db = DAL('mysql://gilsonsbf_flisol:a0f04a56@localhost/gilsonsbf_flisol')
+    # db = DAL('sqlite://flisol_inscricao.sqlite')
+    db = DAL('mysql://root:root@localhost/gilsonsbf_flisol')
 
 ## Caso não precisar mais da sessão
 # session.forget()
@@ -161,8 +161,7 @@ Define o tipo de atividade que o palestrante irá ministrar (Palestra, Mini-Curs
 
 tipo_atividade = db.define_table('tipo_atividade',
                 Field('tipo'),
-                Field('ativo', 'boolean', default=True),
-                format='%(tipo)s',migrate=False)
+                Field('ativo', 'boolean', default=True))
 
 ###########################################
 # Tabela das Salas                        #
@@ -172,7 +171,8 @@ Define as salas e a quantidade de lugares disponíveis em cada uma
 """
 sala = db.define_table('sala',
                        Field('nome', default='sala'),
-                       Field('lugares', 'integer'),migrate=False)
+                       Field('lugares', 'integer'),
+                       format='%(nome)s')
 
 # Validação dos dados da tabela sala
 sala.nome.requires = IS_NOT_EMPTY(error_message='Digite um nome')
@@ -196,7 +196,7 @@ Define a tabela de materiais necessários para o palestrante (Computador, datash
 materiais = db.define_table('materiais',
                 Field('nome'),
                 Field('ativo', 'boolean', default=True),
-                format='%(nome)s',migrate=False)
+                format='%(nome)s')
 
 # Validação da tabela Materiais
 materiais.nome.requires = [
@@ -211,16 +211,16 @@ materiais.nome.requires = [
 
 duracao = db.define_table('duracao',
                           Field('duracao', 'integer'),
-                          Field('desc','string'),
-                          format='%(duracao)s %(desc)s',migrate=False)
+                          Field('descricao','string'),
+                          format='%(duracao)s %(descricao)')
 
 # Validação da tabela duracao
 duracao.duracao.requires = [
                             IS_NOT_EMPTY(error_message='Digite a duração da atividade: 1, 2, ..., 8'),
-                            IS_NOT_IN_DB(db, 'duracao.desc')
+                            IS_NOT_IN_DB(db, 'duracao.descricao')
                             ]
 
-duracao.desc.requires = IS_NOT_EMPTY(error_message='Digite a descrição: Horas, Minutos...')
+duracao.descricao.requires = IS_NOT_EMPTY(error_message='Digite a descrição: Horas, Minutos...')
                 
 ###########################################
 # Tabela Mini-Curriculo                   #
@@ -232,8 +232,7 @@ Define a Tabela Mini-Currículo do Palestrante
 
 curriculo = db.define_table('curriculo',
                 Field('id_usuario', 'integer'),
-                Field('mini_curriculo', 'text'),
-                migrate=False)
+                Field('mini_curriculo', 'text'))
              
 # Validadores - Tabela Mini-Currículo
 curriculo.id_usuario.writable=curriculo.id_usuario.readable=False
@@ -261,7 +260,7 @@ atividade = db.define_table('atividades',
                 Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
                       label='Precisa de algum desses materiais?'),
                 Field('status', 'string', default='Pendente'),
-                format='%(titulo)',migrate=False) # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente               
+                format='%(titulo)') # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente               
                 
 # Validadores - Tabela Atividades
 
@@ -275,7 +274,7 @@ atividade.nivel.requires = IS_IN_SET(levels, zero='Selecione...')
 atividade.id_sala.writable=atividade.id_sala.readable=False # Não permite a visualização nem edição do campo id_sala
 atividade.titulo.requires = IS_NOT_EMPTY(error_message='Digite um valor')
 atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...') # Preenche a lista tipo atividade
-atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(desc)s', zero='Selecione...')
+atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao)s', zero='Selecione...')
 atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
 atividade.status.writable=atividade.status.readable=False # Não permite a visualização nem edição do status da palestra
 
