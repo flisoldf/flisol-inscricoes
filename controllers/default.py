@@ -49,8 +49,7 @@ def user():
             # Consulta o usuario registrado a partir do username
             user = db(db.usuarios.username == request.vars.username).select().first()
             id_group = request.vars.grupo
-            print user.id
-            print id_group
+
             auth.add_membership(id_group, user.id)
 
             # Exibe mensagem de sucesso
