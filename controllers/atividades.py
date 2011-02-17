@@ -16,8 +16,6 @@ def index():
     # Faz a consulta no banco de dados para pegar o id do currículo do palestrante
     curriculo_id = db(curriculo.id_usuario==session.auth.user.id).select().first()
     
-    # Caso nao cadastrou o curriculo, redireciona para o cadastro
-    print curriculo_id
     if curriculo_id:
         # Verifica se o argumento passado na URL é o mesmo da sessão do usuário
         if palestrante == id_user:
@@ -53,7 +51,7 @@ def nova():
         form.vars.id_curriculo = curriculo_id.id
     
     # Popula o status da atividade: 0 = Rejeitado, 1 = Aprovado, 2 = Pendente
-    form.vars.status = 2
+    form.vars.status = 'Pendente'
     
     # Verifica se os dados inseridos passam em todas as validações do banco de dados e formulário
     if form.accepts(request.vars, session):
