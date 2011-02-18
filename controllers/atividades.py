@@ -76,12 +76,12 @@ def minicurriculo():
     if minicurriculo:
         # Ocultando o ID
         db.curriculo.id.readable = db.curriculo.id.writable = False
-        form = SQLFORM(curriculo, atualizar)
+        form = SQLFORM(curriculo, atualizar, submit_button=T('Save'))
         form.vars.id_usuario = id_user
         
     # Caso não houver, retorna o formulário para criação
     else:
-        form = SQLFORM(curriculo)
+        form = SQLFORM(curriculo, submit_button=T('Save'))
         form.vars.id_usuario = id_user
     
     # Verifica se os dados inseridos batem com todas as validações e redireciona para Index, caso esteja ok.
