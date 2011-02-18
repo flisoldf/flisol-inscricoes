@@ -36,7 +36,7 @@ def nova():
     """
     
     # Gera o formulário para inserir novas atividades
-    form = SQLFORM(atividade)
+    form = SQLFORM(atividade,formstyle='divs',submit_button=T('Save'),_class='forms')
     
     # Captura o id do usuário logado no momento e popula no respectivo campo do formulário
     form.vars.id_usuario = session.auth.user.id
