@@ -20,8 +20,8 @@ if 'auth' in globals():
     # Verifica se algum usuario esta logado
     if not auth.is_logged_in():
         response.menu = [
-            (T('Home'), False, URL(request.application,'default','index'), []),
-            (T('Sobre o Evento'), False, URL(request.application,'default','index'), []),            
+            #(T('Home'), False, URL(request.application,'default','index'), []),
+            #(T('Sobre o Evento'), False, 'http://flisoldf.blog.br/2011/?page_id=11', []),            
             ]        
     else:    # Caso estiver logado exibe os menus de acordo com sua permissao
         if auth.has_membership('Palestrante'):
