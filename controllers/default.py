@@ -41,7 +41,7 @@ def user():
     # Caso estiver no formulario de registro
     # cria o formulario de cadastro
     if request.args(0) == 'register':
-        form = SQLFORM(db.usuarios)
+        form = SQLFORM(db.usuarios, submit_button=T('register'))
         
         # Se o cadastro foi efetuado com sucesso
         # Vincule ao grupo selecionado
@@ -68,7 +68,7 @@ def user():
         
         # Capturando os dados do usuario logado
         id_user = session.auth.user.id
-        form = SQLFORM(db.usuarios, id_user)
+        form = SQLFORM(db.usuarios, id_user, submit_button=T('Save'))
         
         if form.accepts(request.vars, session):
             response.flash = 'Perfil atualizado com sucesso.'
