@@ -1,0 +1,32 @@
+#formularios {
+    width: auto;
+    margin-left: 30%;
+}
+
+.forms {}
+
+.forms div {padding-bottom: 5px;}
+
+.forms input[type="text"] {
+    width: 35%;
+    height: 22px;
+    font-size: 120%;
+}
+
+.forms textarea {
+    width: 45%;
+    font-size: 120%;
+}
+
+.forms select {width: 40%;}
+
+.forms select[multiple="multiple"] {height: 80%;}
+
+.forms input[type="submit"], input[type="button"], button {
+    width: 10%;
+    font-size: 120%;
+    margin-left: 15%;
+}
+
+.forms .error {width: 350px;}
+
