@@ -149,7 +149,9 @@ if 'auth' in globals():
             custom_auth_table.grupo.requires = IS_IN_DB(db,'grupos.id', 'grupos.role',
                 zero=T('escolha_grupo'), error_message=T('is_choose'))
     else:
-        custom_auth_table.grupo.requires = IS_IN_DB(db(db.grupos.role != 'Administrador'),
+        # query = db.grupos.role != 'Administrador'
+        query = (db.grupos.role != 'Administrador') & (db.grupos.role != 'Participante')
+        custom_auth_table.grupo.requires = IS_IN_DB(db(query),
             'grupos.id', 'grupos.role', zero=T('escolha_grupo'), error_message=T('is_choose'))        
 
 ###########################################
