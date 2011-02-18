@@ -165,6 +165,12 @@ tipo_atividade = db.define_table('tipo_atividade',
                 Field('ativo', 'boolean', default=True),
                 format='%(tipo)s')
 
+# Validação da tabela tipo_atividade
+tipo_atividade.tipo.requires = [
+                                IS_NOT_EMPTY(error_message='Tipos: Mini-Curso, Palestra...'),
+                                IS_NOT_IN_DB(db, 'tipo_atividade.tipo', error_message='Selecione um valor válido')
+                                ]
+
 ###########################################
 # Tabela das Salas                        #
 ###########################################
@@ -178,12 +184,6 @@ sala = db.define_table('sala',
 # Validação dos dados da tabela sala
 sala.nome.requires = IS_NOT_EMPTY(error_message='Digite um nome')
 sala.lugares.requires = IS_NOT_EMPTY(error_message='Informe a quantidade de lugares disponíveis na sala')
-
-# Validação da tabela tipo_atividade
-tipo_atividade.tipo.requires = [
-                                IS_NOT_EMPTY(error_message='Tipos: Mini-Curso, Palestra...'),
-                                IS_NOT_IN_DB(db, 'tipo_atividade.tipo')
-                                ]
 
 
 ###########################################
@@ -212,16 +212,16 @@ materiais.nome.requires = [
 
 duracao = db.define_table('duracao',
                           Field('duracao', 'integer'),
-                          Field('desc',),
-                          format='%(duracao)s %(desc)s')
+                          Field('descricao',),
+                          format='%(duracao)s %(descricao)s')
 
 # Validação da tabela duracao
 duracao.duracao.requires = [
                             IS_NOT_EMPTY(error_message='Digite a duração da atividade: 1, 2, ..., 8'),
-                            IS_NOT_IN_DB(db, 'duracao.desc')
+                            IS_NOT_IN_DB(db, 'duracao.descricao')
                             ]
 
-duracao.desc.requires = IS_NOT_EMPTY(error_message='Digite a descrição: Horas, Minutos...')
+duracao.descricao.requires = IS_NOT_EMPTY(error_message='Digite a descrição: Horas, Minutos...')
                 
 ###########################################
 # Tabela Mini-Curriculo                   #
@@ -260,17 +260,21 @@ atividade = db.define_table('atividades',
                 Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
                 Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
                       label='Precisa de algum desses materiais?'),
-                Field('status', 'integer', default=2)) # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente
+                Field('status', default='Pendente'), # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente
+                Field('observacoes', 'text', label='Observações'),
+                Field('checa_apresentacao', label='Você apresentou essa atividade em outro evento? Qual?'))
                 
 # Validadores - Tabela Atividades
 
+atividade.arquivo.requires = IS_UPLOAD_FILENAME(extension='(pdf|odp)$', lastdot=True, error_message='Sua apresentação deve estar no formato ODP ou PDF')
+atividade.descricao.requires = IS_NOT_EMPTY(error_message='Faça uma breve descrição da sua atividade')
 atividade.tag.writable=atividade.tag.readable=False # Oculatando as palavras chave, para uso posterior
 atividade.id_curriculo.writable=atividade.id_curriculo.readable=False
-atividade.nivel.requires = IS_IN_SET(['Básico', 'Intermediário', 'Avançado'], zero='Selecione...')
+atividade.nivel.requires = IS_IN_SET(['Básico', 'Intermediário', 'Avançado'], zero='Selecione...', error_message='Selecione o nível de sua atividade: Básico, Intermediário ou Avançado')
 atividade.id_sala.writable=atividade.id_sala.readable=False # Não permite a visualização nem edição do campo id_sala
-atividade.titulo.requires = IS_NOT_EMPTY(error_message='Digite um valor')
-atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...') # Preenche a lista tipo atividade
-atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(desc)s', zero='Selecione...')
+atividade.titulo.requires = IS_NOT_EMPTY(error_message='Informe o título de sua atividade')
+atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...', error_message='Tipo da atividade: Palestra, Mini-Curso, InstallFest...') # Preenche a lista tipo atividade
+atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao)s', zero='Selecione...', error_message='Informe a duração da atividade')
 atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
 atividade.status.writable=atividade.status.readable=False # Não permite a visualização nem edição do status da palestra
 
