@@ -234,9 +234,11 @@ curriculo = db.define_table('curriculo',
                 Field('id_usuario', 'integer'),
                 Field('mini_curriculo', 'text'))
              
+# Ocultando o campo id
+curriculo.id_usuario.writable=curriculo.id_usuario.readable=False             
+             
 # Validadores - Tabela Mini-Currículo
-curriculo.id_usuario.writable=curriculo.id_usuario.readable=False
-""" Incluir validador no controller para não permitir mais de um cadastro por palestrante"""
+curriculo.mini_curriculo.requires = IS_NOT_EMPTY(error_message=T('Empty'))
 
                 
 ###########################################
@@ -257,26 +259,44 @@ atividade = db.define_table('atividades',
                 Field('duracao', duracao), # Duração da atividade (em horas)
                 Field('tag', label='Palavras-Chave'), # Tags
                 Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
-                Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
+                Field('materiais', materiais, # Lista de materiais necessários para o palestrante
                       label='Precisa de algum desses materiais?'),
                 Field('status', 'string', default='Pendente'),
+                Field('observacoes','text'),
+                Field('palestra_eventos','string'),
                 format='%(titulo)') # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente               
+                
+# Oculatando os campos que não serão usados
+atividade.tag.writable=atividade.tag.readable=False
+atividade.id_curriculo.writable=atividade.id_curriculo.readable=False                
                 
 # Validadores - Tabela Atividades
 
-atividade.tag.writable=atividade.tag.readable=False # Oculatando as palavras chave, para uso posterior
-atividade.id_curriculo.writable=atividade.id_curriculo.readable=False
-
 # Criando um dicionario para armazenar os níveis
 levels = ['Básico','Intermediário','Avançado']
-atividade.nivel.requires = IS_IN_SET(levels, zero='Selecione...')
+atividade.nivel.requires = IS_IN_SET(levels, zero='Selecione...', error_message = T('Not Selected'))
 
 atividade.id_sala.writable=atividade.id_sala.readable=False # Não permite a visualização nem edição do campo id_sala
 atividade.titulo.requires = IS_NOT_EMPTY(error_message='Digite um valor')
-atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...') # Preenche a lista tipo atividade
-atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao)s', zero='Selecione...')
+atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...', error_message = T('Not Selected'))
+atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao)s', zero='Selecione...', error_message = T('Not Selected'))
+atividade.materiais.requires = IS_IN_DB(db, 'materiais.id', '%(nome)s', zero='Selecione...',
+    error_message = T('Not Selected'),multiple = True)
+atividade.arquivo.requires = IS_NOT_EMPTY(error_message=T('Empty'))
 atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
 atividade.status.writable=atividade.status.readable=False # Não permite a visualização nem edição do status da palestra
+
+# Rotulos dos campos do formulario
+atividade.titulo.label = T('Titulo')
+atividade.descricao.label = T('Descricao')
+atividade.nivel.label = T('Nivel')
+atividade.tipo.label = T('Tipo')
+atividade.duracao.label = T('Duracao')
+atividade.tag.label = T('Tag')
+atividade.arquivo.label = T('Arquivo')
+atividade.materiais.label = T('Materiais')
+atividade.observacoes.label = T('Observacoes')
+atividade.palestra_eventos.label = T('Palestra Eventos')
 
 crud.settings.auth = None                      # força autorizacao no CRUD
 
