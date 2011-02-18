@@ -1,14 +1,14 @@
 (dp1
 S'id_usuario'
 p2
-S'INTEGER'
+S'INT'
 p3
 sS'mini_curriculo'
 p4
-S'TEXT'
+S'LONGTEXT'
 p5
 sS'id'
 p6
-S'INTEGER PRIMARY KEY AUTOINCREMENT'
+S'INT AUTO_INCREMENT NOT NULL'
 p7
 s.
