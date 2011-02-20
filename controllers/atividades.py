@@ -28,12 +28,50 @@ def index():
         redirect(URL('atividades', 'minicurriculo'))
 
 
+@auth.requires_membership('Administrador')
+def dashboard():
+    """
+    Essa função é para listar todas as atividades inscritas
+    no sistema. Elas serão separadas a partir do seu status.
+    Primeiro ira consultar as atividades, pendentes e após isso
+    as aprovadas e rejeitadas. Os seus resultados serão enviados para
+    os objetos do tipo plugin (que refencia ao Power Table) e renderizá-las
+    na view
+    """
+    
+    ################################################################################
+    ##                Atividades Pendentes
+    ################################################################################    
+    
+    # Consultando as atividades pendentes
+    pendentes = db(db.atividades.status == 'Pendente').select()
+    
+    ################################################################################    
+    ##                Atividades Aprovadas
+    ################################################################################    
+    
+    # Consultando as atividades aprovadas
+    aprovadas = db(db.atividades.status == 'Aprovada').select()
+    
+    ################################################################################    
+    ##                Atividades Rejeitadas
+    ################################################################################    
+    
+    # Consultando as atividades rejeitadas
+    rejeitadas = db(db.atividades.status == 'Rejeitada').select()
+    
+    return dict(pendentes = pendentes, aprovadas = aprovadas, rejeitadas = rejeitadas)
+
 
 @auth.requires_membership('Palestrante')
 def nova():
     """
     Essa função é para inserção de novas atividades
     """
+    
+    # Ocultando o campo status
+    db.atividades.status.readable = \
+    db.atividades.status.writable = False
     
     # Gera o formulário para inserir novas atividades
     form = SQLFORM(atividade,formstyle='divs',submit_button=T('Save'),_class='forms')
