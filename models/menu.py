@@ -24,6 +24,10 @@ if 'auth' in globals():
             #(T('Sobre o Evento'), False, 'http://flisoldf.blog.br/2011/?page_id=11', []),            
             ]        
     else:    # Caso estiver logado exibe os menus de acordo com sua permissao
+        if auth.has_membership('Administrador'):
+            response.menu = [
+                    (T('Home'), False, URL('atividades','dashboard'), [])
+                    ]
         if auth.has_membership('Palestrante'):
             response.menu = [
                 (T('Home'), False, URL(request.application,'atividades','index'), []),
