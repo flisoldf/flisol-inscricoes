@@ -19,7 +19,7 @@ def index():
         if auth.has_membership('Palestrante'):
             redirect(URL('atividades','index',args=auth.user.id))
         if auth.has_membership('Administrador'):
-            redirect(URL('atividades','dashboard'))
+            redirect(URL('admin','dashboard'))
     else:
         redirect(URL('default','user',args='register'))
     
