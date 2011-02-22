@@ -248,7 +248,7 @@ Tabela para inserção de atividades pelo palestrante
 """
 
 atividade = db.define_table('atividades',
-                Field('id_usuario', 'integer'),
+                Field('id_usuario', usuarios),
                 Field('id_sala', 'integer'),
                 Field('id_curriculo', 'integer'),
                 Field('titulo'), # Título da atividade
@@ -260,7 +260,7 @@ atividade = db.define_table('atividades',
                 Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
                 Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
                       label='Precisa de algum desses materiais?'),
-                Field('status', default='Pendente'), # Status da atividade: 0 - Rejeitado / 1 - Aprovado / 2 - Pendente
+                Field('status', default='Pendente'), # Status da atividade: Rejeitada / Aprovada / Pendente
                 Field('observacoes', 'text', label='Observações'),
                 Field('checa_apresentacao', label='Você apresentou essa atividade em outro evento? Qual?'))
                 
@@ -276,6 +276,6 @@ atividade.titulo.requires = IS_NOT_EMPTY(error_message='Informe o título de sua
 atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...', error_message='Tipo da atividade: Palestra, Mini-Curso, InstallFest...') # Preenche a lista tipo atividade
 atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao)s', zero='Selecione...', error_message='Informe a duração da atividade')
 atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
-atividade.status.writable=atividade.status.readable=False # Não permite a visualização nem edição do status da palestra
+atividade.status.requires = IS_IN_SET(['Pendente','Aprovada','Rejeitada'], zero='Selecione...', error_message='Selecione um status para a atividade')
 
 crud.settings.auth = None                      # força autorizacao no CRUD
