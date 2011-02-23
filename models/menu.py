@@ -26,7 +26,9 @@ if 'auth' in globals():
     else:    # Caso estiver logado exibe os menus de acordo com sua permissao
         if auth.has_membership('Administrador'):
             response.menu = [
-                    (T('Home'), False, URL('admin','dashboard'), [])
+                    (T('Home'), False, URL('admin','dashboard'), []),
+                    (T('Locais'), False, URL('locais','lista'), []),
+                    (T('Tipo Atividade'), False, URL('tipoatividade','lista'), [])                                  
                     ]
         if auth.has_membership('Palestrante'):
             response.menu = [
