@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 @auth.requires_membership('Palestrante')
 def index():
     """
@@ -23,21 +24,22 @@ def index():
         # Verifica se o argumento passado na URL é o mesmo da sessão do usuário
         if palestrante == id_user:
             ativ = db(atividade.id_usuario==palestrante).select()
-                
             return dict(ativ=ativ, id_user=int(palestrante))
-        else:                       
+        else:
             return dict(ativ=None, id_user=int(palestrante))        
     else:
         session.flash = "Escreva o seu mini-curriculo antes de cadastrar sua palestra."
         redirect(URL('atividades', 'minicurriculo'))
-
-
 
 @auth.requires_membership('Palestrante')
 def nova():
     """
     Essa função é para inserção de novas atividades
     """
+    
+    # Ocultando o campo status
+    db.atividades.status.readable = \
+    db.atividades.status.writable = False
     
     # Gera o formulário para inserir novas atividades
     form = SQLFORM(atividade,formstyle='divs',submit_button=T('Save'),_class='forms')
