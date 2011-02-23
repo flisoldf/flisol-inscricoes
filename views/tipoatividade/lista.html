@@ -1,0 +1,33 @@
+{{ extend 'layout.html' }}
+
+{{ if tipos_atividades: }}
+    <center>
+        <h2>Lista de Tipos de Atividades Cadastradas</h2>
+    </center>
+    <table class="tabela">
+        <thead>
+            <tr>
+                <th>Tipo da Atividade</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ for tipo_atividade in tipos_atividades: }}
+                <tr>
+                    <td><a href="{{=URL('tipoatividade','editar',args=[tipo_atividade.id])}}">{{=tipo_atividade.tipo}}</a></td>
+                    {{ if tipo_atividade.ativo: }}
+                        <td>Ativo</td>
+                    {{ else: }}
+                        <td>Inativo</td>                    
+                    {{ pass }}
+                </tr>
+            {{ pass }}
+        </tbody>
+    </table>
+{{ else: }}
+    <center>
+        <h2>Nenhum tipo de atividade cadastrada.</h2>
+    </center>
+{{ pass }}
+<br />
+<center><h3><a href="{{=URL('tipoatividade','nova')}}">Novo Tipo de Atividade</a></h3></center>
