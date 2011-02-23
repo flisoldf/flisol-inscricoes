@@ -266,7 +266,7 @@ atividade = db.define_table('atividades',
                 
 # Validadores - Tabela Atividades
 
-atividade.arquivo.requires = IS_UPLOAD_FILENAME(extension='(pdf|odp)$', lastdot=True, error_message='Sua apresentação deve estar no formato ODP ou PDF')
+atividade.arquivo.requires = IS_EMPTY_OR(IS_UPLOAD_FILENAME(extension='(pdf|odp)$', lastdot=True, error_message='Sua apresentação deve estar no formato ODP ou PDF'))
 atividade.descricao.requires = IS_NOT_EMPTY(error_message='Faça uma breve descrição da sua atividade')
 atividade.tag.writable=atividade.tag.readable=False # Oculatando as palavras chave, para uso posterior
 atividade.id_curriculo.writable=atividade.id_curriculo.readable=False
