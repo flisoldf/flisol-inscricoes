@@ -1,0 +1,29 @@
+{{ extend 'layout.html' }}
+
+{{ if salas: }}
+    <center>
+        <h2>Lista de Locais Cadastrados</h2>
+    </center>
+    <table class="tabela">
+        <thead>
+            <tr>
+                <th>Nome do Local</th>
+                <th>Quantidade de Lugares</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ for sala in salas: }}
+                <tr>
+                    <td><a href="{{=URL('locais','editar',args=[sala.id])}}">{{=sala.nome}}</a></td>
+                    <td>{{=sala.lugares}}</td>
+                </tr>
+            {{ pass }}
+        </tbody>
+    </table>
+{{ else: }}
+    <center>
+        <h2>Nenhuma sala cadastrada.</h2>
+    </center>
+{{ pass }}
+<br />
+<center><h3><a href="{{=URL('locais','nova')}}">Novo Local</a></h3></center>
