@@ -82,6 +82,14 @@ table.tabela{
     padding-right: 4px;
     text-align: center;
 }
+
+.tabela tbody td select {
+    margin: 0;
+    padding: 0;
+    width: 40%;
+    font-size: 80%;
+}
+
 .tabela tbody tr th+td a{
     background-image: none;
     padding: inherit;
