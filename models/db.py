@@ -179,7 +179,7 @@ Define as salas e a quantidade de lugares disponíveis em cada uma
 """
 sala = db.define_table('sala',
                        Field('nome', default='sala'),
-                       Field('lugares', 'integer'))
+                       Field('lugares', 'integer', default=60))
 
 # Validação dos dados da tabela sala
 sala.nome.requires = IS_NOT_EMPTY(error_message='Digite um nome')
