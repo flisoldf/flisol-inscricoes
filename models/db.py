@@ -251,11 +251,11 @@ atividade = db.define_table('atividades',
                 Field('id_usuario', usuarios),
                 Field('id_sala', 'integer'),
                 Field('id_curriculo', 'integer'),
-                Field('titulo'), # Título da atividade
-                Field('descricao', 'text'), # Descrição da atividade
-                Field('nivel', 'list:string'),
-                Field('tipo', tipo_atividade), # Tipo da atividade: Palestra, Mini-Curso, etc.
-                Field('duracao', duracao), # Duração da atividade (em horas)
+                Field('titulo', label='Título*'), # Título da atividade
+                Field('descricao', 'text', label='Descrição*'), # Descrição da atividade
+                Field('nivel', 'list:string', label='Nível*'),
+                Field('tipo', tipo_atividade, label='Tipo*'), # Tipo da atividade: Palestra, Mini-Curso, etc.
+                Field('duracao', duracao, label='Duração*'), # Duração da atividade (em horas)
                 Field('tag', label='Palavras-Chave'), # Tags
                 Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
                 Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
