@@ -32,20 +32,17 @@ if 'auth' in globals():
             ]        
     else:    # Caso estiver logado exibe os menus de acordo com sua permissao
         if auth.has_membership('Administrador'):
-<<<<<<< HEAD
             response.menu = [
                     (T('Home'), False, URL('admin','dashboard'), []),
                     (T('Locais'), False, URL('locais','lista'), []),
                     (T('Tipo Atividade'), False, URL('tipoatividade','lista'), [])                                  
                     ]
         if auth.has_membership('Palestrante'):
-=======
->>>>>>> 87fa855049f6f0a3df4fda380a5ca7dbde13cefe
             response.menu = [
                     (T('Home'), False, URL('admin','dashboard'), []),
                     (T('Locais'), False, URL('locais','lista'), []),
                     (T('Tipo Atividade'), False, URL('tipoatividade','lista'), [])                                  
-					]
+                    ]
         if auth.has_membership('Palestrante'):
             if hoje <= prazo_atividade:
                 response.menu = [
