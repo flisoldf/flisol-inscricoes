@@ -179,7 +179,7 @@ Define as salas e a quantidade de lugares disponíveis em cada uma
 """
 sala = db.define_table('sala',
                        Field('nome', default='sala'),
-                       Field('lugares', 'integer'))
+                       Field('lugares', 'integer', default=60))
 
 # Validação dos dados da tabela sala
 sala.nome.requires = IS_NOT_EMPTY(error_message='Digite um nome')
@@ -251,11 +251,11 @@ atividade = db.define_table('atividades',
                 Field('id_usuario', usuarios),
                 Field('id_sala', 'integer'),
                 Field('id_curriculo', 'integer'),
-                Field('titulo'), # Título da atividade
-                Field('descricao', 'text'), # Descrição da atividade
-                Field('nivel', 'list:string'),
-                Field('tipo', tipo_atividade), # Tipo da atividade: Palestra, Mini-Curso, etc.
-                Field('duracao', duracao), # Duração da atividade (em horas)
+                Field('titulo', label='Título*'), # Título da atividade
+                Field('descricao', 'text', label='Descrição*'), # Descrição da atividade
+                Field('nivel', 'list:string', label='Nível*'),
+                Field('tipo', tipo_atividade, label='Tipo*'), # Tipo da atividade: Palestra, Mini-Curso, etc.
+                Field('duracao', duracao, label='Duração*'), # Duração da atividade (em horas)
                 Field('tag', label='Palavras-Chave'), # Tags
                 Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
                 Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
@@ -266,7 +266,7 @@ atividade = db.define_table('atividades',
                 
 # Validadores - Tabela Atividades
 
-atividade.arquivo.requires = IS_UPLOAD_FILENAME(extension='(pdf|odp)$', lastdot=True, error_message='Sua apresentação deve estar no formato ODP ou PDF')
+atividade.arquivo.requires = IS_EMPTY_OR(IS_UPLOAD_FILENAME(extension='(pdf|odp)$', lastdot=True, error_message='Sua apresentação deve estar no formato ODP ou PDF'))
 atividade.descricao.requires = IS_NOT_EMPTY(error_message='Faça uma breve descrição da sua atividade')
 atividade.tag.writable=atividade.tag.readable=False # Oculatando as palavras chave, para uso posterior
 atividade.id_curriculo.writable=atividade.id_curriculo.readable=False

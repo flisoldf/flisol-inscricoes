@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+from datetime import date, datetime
+
 #########################################################################
 ## Customizando o titulo da aplicação, subtitulo e menus
 #########################################################################
@@ -11,6 +14,10 @@ response.meta.description = ''
 response.meta.keywords = 'web2py, flisol, software livre, acsldf'
 response.meta.generator = 'Web2py Enterprise Framework'
 response.meta.copyright = 'Copyright 2011'
+
+# Caso o prazo de inscricoes estoure, então desabilita a inscrição de palestrantes
+hoje = date.today()
+prazo_atividade = date(2011, 3, 13)
 
 ##########################################
 ## Criando seus menus
@@ -25,17 +32,32 @@ if 'auth' in globals():
             ]        
     else:    # Caso estiver logado exibe os menus de acordo com sua permissao
         if auth.has_membership('Administrador'):
+<<<<<<< HEAD
             response.menu = [
                     (T('Home'), False, URL('admin','dashboard'), []),
                     (T('Locais'), False, URL('locais','lista'), []),
                     (T('Tipo Atividade'), False, URL('tipoatividade','lista'), [])                                  
                     ]
         if auth.has_membership('Palestrante'):
+=======
+>>>>>>> 87fa855049f6f0a3df4fda380a5ca7dbde13cefe
             response.menu = [
-                (T('Home'), False, URL(request.application,'atividades','index'), []),
-                (T('Atividades'), False, URL(request.application,'atividades','nova'), []),
-                (T('Mini-Currículo'), False, URL(request.application, 'atividades', 'minicurriculo'), [])
-                ]
+                    (T('Home'), False, URL('admin','dashboard'), []),
+                    (T('Locais'), False, URL('locais','lista'), []),
+                    (T('Tipo Atividade'), False, URL('tipoatividade','lista'), [])                                  
+					]
+        if auth.has_membership('Palestrante'):
+            if hoje <= prazo_atividade:
+                response.menu = [
+                    (T('Home'), False, URL(request.application,'atividades','index'), []),
+                    (T('Atividades'), False, URL(request.application,'atividades','nova'), []),
+                    (T('Mini-Currículo'), False, URL(request.application, 'atividades', 'minicurriculo'), [])
+                    ]
+            else:
+                response.menu = [
+                    (T('Home'), False, URL(request.application,'atividades','index'), []),
+                    (T('Mini-Currículo'), False, URL(request.application, 'atividades', 'minicurriculo'), [])
+                    ]           
         if auth.has_membership('Participante'):
                     response.menu = [
                         (T('Home'), False, URL(request.application,'default','index'), []),

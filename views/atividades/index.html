@@ -1,45 +1,57 @@
 {{extend 'layout.html'}}
+{{
+from datetime import date, datetime
 
-{{if ativ:}}
-    <center>    
-        <h2>Suas Atividades Cadastradas</h2>
-    </center>
-    <table class="tabela">
-        <thead>
-            <tr>
-                <th>Atividade</th>
-                <th>Tipo</th>
-                <th>Nível</th>
-                <th>Duração</th>
-                <th>Apresentação</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        {{ for atividade in ativ: }}
-            <tr>
-                <td>{{=atividade.titulo}}</td>
-                <td>{{=atividade.tipo.tipo}}</td>
-                <td>{{=atividade.nivel[0]}}</td>
-                <td>{{=atividade.duracao.duracao}} hora(s)</td>
-                {{ if atividade.arquivo: }}
-                    <td>
-                        <a href="{{=URL('default','download',args=[atividade.arquivo])}}">Material da Apresentação</a>
-                    </td>
-                {{ else: }}
-                    <td>Sem Apresentação</td>
-                {{pass}}
-                <td>{{=atividade.status}}</td>
-            </tr>
-        {{ pass }}
-    </table>
-    <center><a href="{{=URL('atividades','nova')}}"><h4>Nova Atividade</h4></a></center>
-{{else:}}
-    {{if session.auth.user.id != id_user:}}
-        <center><h2>{{=T('usuario_ativ_invalido')}}</h2></center>
-    {{else:}}
-        <center>
-            <h2>Você não tem atividades cadastradas!</h2><br />
-            <a href="{{=URL('atividades','nova')}}"><h3>Criar uma Nova Atividade</h3></a>
+# Caso o prazo estoure, então desabilita a inscrição de palestrantes
+hoje = date.today()
+data_limite = date(2011, 3, 13)
+}}
+{{if hoje <= data_limite:}}
+    {{if ativ:}}
+        <center>    
+            <h2>Suas Atividades Cadastradas</h2>
         </center>
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>Atividade</th>
+                    <th>Tipo</th>
+                    <th>Nível</th>
+                    <th>Duração</th>
+                    <th>Apresentação</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            {{ for atividade in ativ: }}
+                <tr>
+                    <td>{{=atividade.titulo}}</td>
+                    <td>{{=atividade.tipo.tipo}}</td>
+                    <td>{{=atividade.nivel[0]}}</td>
+                    <td>{{=atividade.duracao.duracao}} hora(s)</td>
+                    {{ if atividade.arquivo: }}
+                        <td>
+                            <a href="{{=URL('default','download',args=[atividade.arquivo])}}">Material da Apresentação</a>
+                        </td>
+                    {{ else: }}
+                        <td>Sem Apresentação</td>
+                    {{pass}}
+                    <td>{{=atividade.status}}</td>
+                </tr>
+            {{ pass }}
+        </table>
+        <center><a href="{{=URL('atividades','nova')}}"><h4>Nova Atividade</h4></a></center>
+    {{else:}}
+        {{if session.auth.user.id != id_user:}}
+            <center><h2>{{=T('usuario_ativ_invalido')}}</h2></center>
+        {{else:}}
+            <center>
+                <h2>Você não tem atividades cadastradas!</h2>
+                <a href="{{=URL('atividades','nova')}}"><h3>Criar uma Nova Atividade</h3></a>
+            </center>
+        {{pass}}
     {{pass}}
-{{pass}}
+{{ else: }}
+    <center>
+        <h3>Que pena! Terminou o prazo para a inscrição das atividades do FLISOL.</h3>
+    </center>
+{{ pass }}

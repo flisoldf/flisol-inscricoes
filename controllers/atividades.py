@@ -17,6 +17,10 @@ def index():
     curriculo_id = db(curriculo.id_usuario==session.auth.user.id).select().first()
     
     if curriculo_id:
+    
+        # Insere uma notificação para os palestrantes
+        session.flash = "O prazo para a submissão de atividades é até o dia 18 de Março."    
+    
         # Verifica se o argumento passado na URL é o mesmo da sessão do usuário
         if palestrante == id_user:
             ativ = db(atividade.id_usuario==palestrante).select()
