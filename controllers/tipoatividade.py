@@ -34,7 +34,7 @@ def editar():
     # Ocultando o ID
     db.tipo_atividade.id.readable = False
     
-    form = SQLFORM(db.tipo_atividade, id_tipo, submit_button=T('Save'))
+    form = SQLFORM(db.tipo_atividade, id_tipo, submit_button=T('Save'), deletable=True)
 
     # Renderizando no nova.html
     response.view = 'tipoatividade/nova.html'
