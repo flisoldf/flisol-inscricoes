@@ -36,7 +36,11 @@ def editar():
     # Ocultando o campo ID
     db.sala.id.readable = False
     
-    form = SQLFORM(db.sala, id_sala,submit_button=T('Save'))
+    form = SQLFORM(db.sala, id_sala,submit_button=T('Save'), deletable=True)
+    
+    if form.accepts(request.vars, session):
+        session.flash = 'Registro atualizado com sucesso'
+        redirect(URL('locais', 'lista'))
     
     # Renderizando o form no arquivo nova.html
     response.view = 'locais/nova.html'
