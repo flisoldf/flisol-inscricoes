@@ -170,7 +170,8 @@ tipo_atividade.tipo.requires = [
                                 IS_NOT_EMPTY(error_message='Tipos: Mini-Curso, Palestra...'),
                                 IS_NOT_IN_DB(db, 'tipo_atividade.tipo', error_message='Selecione um valor válido')
                                 ]
-
+tipo_atividade.ativo.writable = \
+tipo_atividade.ativo.readable = False
 ###########################################
 # Tabela das Salas                        #
 ###########################################
