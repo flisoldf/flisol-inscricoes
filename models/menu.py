@@ -36,13 +36,7 @@ if 'auth' in globals():
                     (T('Home'), False, URL('admin','dashboard'), []),
                     (T('Locais'), False, URL('locais','lista'), []),
                     (T('Tipo Atividade'), False, URL('tipoatividade','lista'), [])                                  
-                    ]
-        if auth.has_membership('Palestrante'):
-            response.menu = [
-                    (T('Home'), False, URL('admin','dashboard'), []),
-                    (T('Locais'), False, URL('locais','lista'), []),
-                    (T('Tipo Atividade'), False, URL('tipoatividade','lista'), [])                                  
-                    ]
+					]
         if auth.has_membership('Palestrante'):
             if hoje <= prazo_atividade:
                 response.menu = [
