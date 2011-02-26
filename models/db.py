@@ -28,11 +28,29 @@ crud = Crud(globals(),db)                      # para helpers CRUD usando Auth
 service = Service(globals())                   # para renderizacao json, xml, jsonrpc, xmlrpc, amfrpc
 plugins = PluginManager()                      # Gerencia todos os plugins instalados no sistema
 
+crud.settings.auth = None                      # força autorizacao no CRUD
+
 # Dados para envio de emails
 mail.settings.server = 'logging' or 'smtp.gmail.com:587'  # seu servidor SMTP
 mail.settings.sender = 'you@gmail.com'         # seu email
 mail.settings.login = 'username:password'      # suas credenciais ou vazio (caso nao precise de autenticacao)
 
+"""
+Devido a um bug da DAL, o metodo abaixo faz o mesmo
+trabalho do represent usado como argumento da classe
+Field
+"""
+def get_represent(id,table,field):
+    row = db(db[table]['id'] == id).select(db[table][field]).first()
+    return row[field]
+
+"""
+##############################################################################################################
+###
+### Módulo Auth
+###
+##############################################################################################################
+"""
 
 # Antes de mais nada, temos que renomear as tabelas do modulo de autenticacao e controle de acesso
 auth.settings.table_user_name = 'usuarios'
@@ -104,6 +122,20 @@ custom_auth_table.email.label = T('Email')
 custom_auth_table.password.label = T('Password')
 custom_auth_table.grupo.label = T('Perfil')
 
+
+"""
+
+Quando enviar o sistema para acessar o banco
+MySQL, inserir o parametro migrate para False,
+para assim evitar erros provindos do banco como
+quando alerta que a tabela X já foi criada.
+
+Ex.: auth.define_table(migrate=False)
+
+Com isso ele vai desativar a criação/atualização
+das tabelas do módulo Auth do sistema.
+
+"""
 auth.define_tables()                           # cria todas as tabelas necessarias para o modulo Auth
 auth.settings.hmac_key = 'sha512:1d718a94-81cf-4274-8ac1-42207b203246'   # antes de define_tables()
 auth.settings.mailer = mail                    # para verificação de email
@@ -152,6 +184,16 @@ if 'auth' in globals():
         query = (db.grupos.role != 'Administrador') & (db.grupos.role != 'Participante')
         custom_auth_table.grupo.requires = IS_IN_DB(db(query),
             'grupos.id', 'grupos.role', zero=T('escolha_grupo'), error_message=T('is_choose'))        
+
+
+
+"""
+##############################################################################################################
+###
+### Tabelas do sistema
+###
+##############################################################################################################
+"""
 
 ###########################################
 # Tabela de Tipos de Atividades           #
@@ -249,8 +291,8 @@ Tabela para inserção de atividades pelo palestrante
 """
 
 atividade = db.define_table('atividades',
-                Field('id_usuario', usuarios),
-                Field('id_sala', 'integer'),
+                Field('id_usuario', usuarios,label="Palestrante"),
+                Field('id_sala', 'integer',label="Local da Palestra"),
                 Field('id_curriculo', 'integer'),
                 Field('titulo', label='Título*'), # Título da atividade
                 Field('descricao', 'text', label='Descrição*'), # Descrição da atividade
@@ -264,19 +306,27 @@ atividade = db.define_table('atividades',
                 Field('status', default='Pendente'), # Status da atividade: Rejeitada / Aprovada / Pendente
                 Field('observacoes', 'text', label='Observações'),
                 Field('checa_apresentacao', label='Você apresentou essa atividade em outro evento? Qual?'))
-                
+
+# Inserindo os represents
+atividade.id_usuario.represent=lambda c:get_represent(atividade.id_usuario,'usuarios','first_name')
+atividade.id_sala.represent=lambda c:get_represent(atividade.id_sala,'sala','nome')
+atividade.id_curriculo.represent=lambda c:get_represent(atividade.id_curriculo,'curriculo','mini_curriculo')
+atividade.tipo.represent = lambda c:get_represent(atividade.tipo,'tipo_atividade','tipo')
+
 # Validadores - Tabela Atividades
 
-atividade.arquivo.requires = IS_EMPTY_OR(IS_UPLOAD_FILENAME(extension='(pdf|odp)$', lastdot=True, error_message='Sua apresentação deve estar no formato ODP ou PDF'))
+atividade.arquivo.requires = IS_EMPTY_OR(IS_UPLOAD_FILENAME(extension='(pdf|odp)$', \
+        lastdot=True, error_message='Sua apresentação deve estar no formato ODP ou PDF'))
 atividade.descricao.requires = IS_NOT_EMPTY(error_message='Faça uma breve descrição da sua atividade')
 atividade.tag.writable=atividade.tag.readable=False # Oculatando as palavras chave, para uso posterior
 atividade.id_curriculo.writable=atividade.id_curriculo.readable=False
-atividade.nivel.requires = IS_IN_SET(['Básico', 'Intermediário', 'Avançado'], zero='Selecione...', error_message='Selecione o nível de sua atividade: Básico, Intermediário ou Avançado')
+atividade.nivel.requires = IS_IN_SET(['Básico', 'Intermediário', 'Avançado'], zero='Selecione...', \
+        error_message='Selecione o nível de sua atividade: Básico, Intermediário ou Avançado')
 atividade.id_sala.writable=atividade.id_sala.readable=False # Não permite a visualização nem edição do campo id_sala
 atividade.titulo.requires = IS_NOT_EMPTY(error_message='Informe o título de sua atividade')
-atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...', error_message='Tipo da atividade: Palestra, Mini-Curso, InstallFest...') # Preenche a lista tipo atividade
+atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...', \
+        error_message='Tipo da atividade: Palestra, Mini-Curso, InstallFest...') # Preenche a lista tipo atividade
 atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao)s', zero='Selecione...', error_message='Informe a duração da atividade')
 atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
-atividade.status.requires = IS_IN_SET(['Pendente','Aprovada','Rejeitada'], zero='Selecione...', error_message='Selecione um status para a atividade')
-
-crud.settings.auth = None                      # força autorizacao no CRUD
+atividade.status.requires = IS_IN_SET(['Pendente','Aprovada','Rejeitada'], zero='Selecione...', \
+        error_message='Selecione um status para a atividade')
