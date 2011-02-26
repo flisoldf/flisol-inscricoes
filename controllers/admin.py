@@ -11,28 +11,27 @@ def dashboard():
     na view
     """
     
-    ################################################################################
-    ##                Atividades Pendentes
-    ################################################################################    
-    
-    # Consultando as atividades pendentes
-    pendentes = db(db.atividades.status == 'Pendente').select()
-    
-    ################################################################################    
-    ##                Atividades Aprovadas
-    ################################################################################    
-    
-    # Consultando as atividades aprovadas
-    aprovadas = db(db.atividades.status == 'Aprovada').select()
-    
-    ################################################################################    
-    ##                Atividades Rejeitadas
-    ################################################################################    
+    # Consultando as atividades
+    atividades = db(db.atividades.id > 0).select(orderby=db.atividades.tipo)
+   
+    # Configurando o plugin Power Table
+    table = plugins.powerTable
+    table.datasource = atividades
+    table.uitheme = 'ui-lightness'
+    table.dtfeatures['sPaginationType'] = 'scrolling'
+    table.headers = 'labels'
+    table.dtfeatures['sScrollY'] = '200'
+    table.dtfeatures['sScrollX'] = '100%'
+    table.keycolumn = 'atividades.id'
+    table.columns = ['atividades.titulo','atividades.id_usuario','atividades.nivel','atividades.tipo','atividades.materiais','atividades.status']
+    table.showkeycolumn = False
+    table.truncate = 120       
     
     # Consultando as atividades rejeitadas
     rejeitadas = db(db.atividades.status == 'Rejeitada').select()
     
-    return dict(pendentes = pendentes, aprovadas = aprovadas, rejeitadas = rejeitadas)
+    # return dict(atividades = atividades)
+    return dict(atividades = table.create())
 
 
 @auth.requires_membership('Administrador')
