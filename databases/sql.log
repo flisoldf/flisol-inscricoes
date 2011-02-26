@@ -1,0 +1,100 @@
+timestamp: 2011-02-25T22:00:44.580212
+CREATE TABLE grupos(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(128),
+    description CHAR(128)
+);
+success!
+timestamp: 2011-02-25T22:00:44.587050
+CREATE TABLE usuarios(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    username CHAR(128) UNIQUE,
+    email CHAR(128),
+    password CHAR(512),
+    grupo INTEGER REFERENCES grupos(id) ON DELETE CASCADE,
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2011-02-25T22:00:44.590385
+CREATE TABLE relacionamento(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES grupos(id) ON DELETE CASCADE
+);
+success!
+timestamp: 2011-02-25T22:00:44.617882
+CREATE TABLE autorizacao(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES grupos(id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2011-02-25T22:00:44.620942
+CREATE TABLE eventos(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2011-02-25T22:00:44.630605
+CREATE TABLE tipo_atividade(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tipo CHAR(512),
+    ativo CHAR(1)
+);
+success!
+timestamp: 2011-02-25T22:00:44.634911
+CREATE TABLE sala(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome CHAR(512),
+    lugares INTEGER
+);
+success!
+timestamp: 2011-02-25T22:00:44.642438
+CREATE TABLE materiais(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome CHAR(512),
+    ativo CHAR(1)
+);
+success!
+timestamp: 2011-02-25T22:00:44.646397
+CREATE TABLE duracao(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    duracao INTEGER,
+    descricao CHAR(512)
+);
+success!
+timestamp: 2011-02-25T22:00:44.649455
+CREATE TABLE curriculo(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_usuario INTEGER,
+    mini_curriculo TEXT
+);
+success!
+timestamp: 2011-02-25T22:00:44.653142
+CREATE TABLE atividades(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_usuario INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
+    id_sala INTEGER,
+    id_curriculo INTEGER,
+    titulo CHAR(512),
+    descricao TEXT,
+    nivel TEXT,
+    tipo INTEGER REFERENCES tipo_atividade(id) ON DELETE CASCADE,
+    duracao INTEGER REFERENCES duracao(id) ON DELETE CASCADE,
+    tag CHAR(512),
+    arquivo CHAR(512),
+    materiais TEXT,
+    status CHAR(512),
+    observacoes TEXT,
+    checa_apresentacao CHAR(512)
+);
+success!
