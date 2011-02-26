@@ -35,7 +35,12 @@ if 'auth' in globals():
             response.menu = [
                     (T('Home'), False, URL('admin','dashboard'), []),
                     (T('Locais'), False, URL('locais','lista'), []),
-                    (T('Tipo Atividade'), False, URL('tipoatividade','lista'), [])                                  
+                    (T('Tipo Atividade'), False, URL('tipoatividade','lista'), []),
+                    (T('Cadastro Usuarios'), False, None, [
+                        (T('Inscritos'), False, URL('usuarios','lista', args=['inscritos']), []),
+                        (T('Palestrantes'), False, URL('usuarios','lista', args=['palestrantes']), []),
+                        (T('Administradores'), False, URL('usuarios','lista', args=['administradores']), [])
+                    ])                                  
 					]
         if auth.has_membership('Palestrante'):
             if hoje <= prazo_atividade:
