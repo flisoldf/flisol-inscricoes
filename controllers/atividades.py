@@ -63,9 +63,39 @@ def nova():
     if form.accepts(request.vars, session):
         session.flash = "Atividade submetida com sucesso"
         redirect(URL('atividades', 'index', args=session.auth.user.id))
+    else:
+        session.flash = "Erro ao inserir a Atividade. Abra o formulário e tente novamente."
         
     return dict(form=form)
 
+@auth.requires_membership('Palestrante')
+def editar():
+    """
+    Edita a palestra selecionada
+    pelo palestrante.
+    """
+    
+    # Capturando o ID da Atividade selecionada
+    id_atividade = request.args(0) or redirect(URL('atividades','index'))
+    
+    # Ocultando o campo ID e o Status
+    db.atividades.id.readable = \
+    db.atividades.id.writable = False
+    
+    db.atividades.status.readable = \
+    db.atividades.status.writable = False
+    
+    # Criando o formulario de edicao
+    form = SQLFORM(db.atividades, id_atividade,formstyle='divs',submit_button=T('Save'),_class='forms')
+    
+    if form.accepts(request.vars, session):
+        session.flash = "Atividade atualizado com sucesso."
+        redirect(URL('atividades', 'index', args=session.auth.user.id))
+    else:
+        session.flash = "Erro ao inserir a Atividade. Abra o formulário e tente novamente."
+    
+    return dict(form=form)
+    
 @auth.requires_membership('Palestrante')
 def minicurriculo():
     """
@@ -87,12 +117,59 @@ def minicurriculo():
         
     # Caso não houver, retorna o formulário para criação
     else:
-        form = SQLFORM(curriculo, submit_button=T('Save'))
+        form = SQLFORM(curriculo,formstyle='divs',submit_button=T('Save'),_class='forms')
         form.vars.id_usuario = id_user
     
     # Verifica se os dados inseridos batem com todas as validações e redireciona para Index, caso esteja ok.
     if form.accepts(request.vars, session):
         session.flash = 'Currículo atualizado com sucesso'
         redirect(URL('default', 'index'))
+    else:
+        session.flash = "Mini-currículo não foi cadastrado com sucesso. Tente novamente"
     
     return dict(form=form)
+    
+@auth.requires_membership('Administrador')
+def detalhes():
+    id_atividade = request.args(0)
+    
+    # Pesquisa a atividade selecionada
+    atividade = db(db.atividades.id == id_atividade).select().first()
+    
+    # Exibindo somente o campo status
+    db.atividades.id.readable = False
+
+    db.atividades.titulo.readable = \
+    db.atividades.titulo.writable = False
+
+    db.atividades.descricao.readable = \
+    db.atividades.descricao.writable = False
+
+    db.atividades.nivel.readable = \
+    db.atividades.nivel.writable = False
+
+    db.atividades.tipo.readable = \
+    db.atividades.tipo.writable = False
+
+    db.atividades.duracao.readable = \
+    db.atividades.duracao.writable = False
+
+    db.atividades.tag.readable = \
+    db.atividades.tag.writable = False
+
+    db.atividades.arquivo.readable = \
+    db.atividades.arquivo.writable = False
+
+    db.atividades.materiais.readable = \
+    db.atividades.materiais.writable = False
+
+    db.atividades.observacoes.readable = \
+    db.atividades.observacoes.writable = False
+
+    db.atividades.checa_apresentacao.readable = \
+    db.atividades.checa_apresentacao.writable = False
+
+    form = crud.update(db.atividades, id_atividade) 
+    
+    return dict(atividade = atividade, form = form)
+    
