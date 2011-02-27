@@ -1,0 +1,43 @@
+{{ extend 'detalhes.html' }}
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery("input[type='submit']").click(function(){
+            //Fecha o lightbox
+            parent.$.fancybox.close();
+            
+        });    
+    });
+</script>
+
+<h4>Detalhes da Atividade <i>"{{=atividade.titulo}}"</i></h4>
+<hr /><br />
+
+<div class="campo">Descrição </div>
+{{ if atividade.descricao: }}
+    <div class="dados"><p>{{=atividade.descricao}}</p></div><br />
+{{ else: }}
+    <div class="dados">Nenhuma descrição</div>
+{{ pass }}
+
+<div class="campo">Observações </div>
+{{ if atividade.observacoes: }}
+    <div class="dados"><p>{{=atividade.observacoes}}</p></div><br />
+{{ else: }}
+    <div class="dados"><p>Nenhuma observação</p></div>
+{{ pass }}
+
+<div class="campo">Quais eventos ministrou essa atividade? </div>
+{{ if atividade.checa_apresentacao: }}
+    <div class="dados"><p>{{=atividade.checa_apresentacao}}</p></div><br />
+{{ else: }}
+    <div class="dados"><p>Nenhum evento</p></div>
+{{ pass }}
+
+<div class="campo">Status da Atividade: </div>
+<div class="dados">
+{{=form.custom.begin}}
+    {{=form.custom.widget.status}}<br />
+    {{=form.custom.submit}}
+{{=form.custom.end}}
+</div><br />
