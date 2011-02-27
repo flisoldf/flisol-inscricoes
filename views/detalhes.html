@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{=T.accepted_language or 'en'}}" class="no-js"><!-- no-js need it for modernzr -->
+  <head>
+    <!-- Incluindo arquivos estaticos (JS e CSS) criados para os modulos e layouts do sistema -->
+    {{include 'static.html'}}
+    
+    {{#------ include web2py specific js code (jquery, calendar, form stuff) ------}}
+    {{include 'web2py_ajax.html'}}
+  </head>
+  <body>  
+    <div id="detalhes">  
+        {{include}}
+    </div>
+  </body>
+</html>
