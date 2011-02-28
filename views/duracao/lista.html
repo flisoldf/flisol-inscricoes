@@ -1,0 +1,27 @@
+{{ extend 'layout.html' }}
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    //DataTable
+    jQuery("#table_duracao").dataTable();
+  });
+</script>   
+
+<table class="display" id="table_duracao">
+    <thead>
+        <tr>
+            <th>Duração das Atividades</th>
+            <th>Descrição</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ for duracao in duracoes: }}
+            <tr>
+                <td><a href="{{=URL('duracao','editar',args=[duracao.id])}}">{{=duracao.duracao}}</a></td>
+                <td>{{=duracao.descricao}}</td>
+            </tr>
+        {{ pass }}
+    </tbody>
+</table>
+<br />
+<center><h3><a href="{{=URL('duracao','novo')}}">Nova Duração</a></h3></center>
