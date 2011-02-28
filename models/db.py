@@ -36,15 +36,6 @@ mail.settings.sender = 'you@gmail.com'         # seu email
 mail.settings.login = 'username:password'      # suas credenciais ou vazio (caso nao precise de autenticacao)
 
 """
-Devido a um bug da DAL, o metodo abaixo faz o mesmo
-trabalho do represent usado como argumento da classe
-Field
-"""
-def get_represent(id,table,field):
-    row = db(db[table]['id'] == id).select(db[table][field]).first()
-    return row[field]
-
-"""
 ##############################################################################################################
 ###
 ### Módulo Auth
@@ -242,6 +233,7 @@ materiais = db.define_table('materiais',
                 Field('ativo', 'boolean', default=True),
                 format='%(nome)s')
 
+
 # Validação da tabela Materiais
 materiais.nome.requires = [
                            IS_NOT_EMPTY(error_message='Materiais: DataShow, Computador, Internet...'),
@@ -276,7 +268,8 @@ Define a Tabela Mini-Currículo do Palestrante
 
 curriculo = db.define_table('curriculo',
                 Field('id_usuario', 'integer'),
-                Field('mini_curriculo', 'text'))
+                Field('mini_curriculo', 'text',comment=T('Modelo'))
+                )
              
 # Validadores - Tabela Mini-Currículo
 curriculo.id_usuario.writable=curriculo.id_usuario.readable=False
@@ -306,12 +299,6 @@ atividade = db.define_table('atividades',
                 Field('status', default='Pendente'), # Status da atividade: Rejeitada / Aprovada / Pendente
                 Field('observacoes', 'text', label='Observações'),
                 Field('checa_apresentacao', label='Você apresentou essa atividade em outro evento? Qual?'))
-
-# Inserindo os represents
-atividade.id_usuario.represent=lambda c:get_represent(atividade.id_usuario,'usuarios','first_name')
-atividade.id_sala.represent=lambda c:get_represent(atividade.id_sala,'sala','nome')
-atividade.id_curriculo.represent=lambda c:get_represent(atividade.id_curriculo,'curriculo','mini_curriculo')
-atividade.tipo.represent = lambda c:get_represent(atividade.tipo,'tipo_atividade','tipo')
 
 # Validadores - Tabela Atividades
 
