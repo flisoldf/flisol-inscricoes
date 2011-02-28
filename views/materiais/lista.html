@@ -1,0 +1,45 @@
+{{ extend 'layout.html' }}
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    //Fancybox
+    jQuery(".status").fancybox({
+      'width': '35%',
+      'height': '45%',
+      'autoScale': false,
+      'transictionIn': 'none',
+      'transictionOut': 'none',
+      'type': 'iframe'
+    });
+    
+    //DataTable
+    jQuery("#table_materiais").dataTable();
+  });
+</script>   
+
+<center>
+    <h2>Lista de Materiais Cadastrados</h2>
+</center>
+
+<table class="display" id="table_materiais">
+    <thead>
+        <tr>
+            <th>Material</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ for material in materiais: }}
+            <tr>
+                <td><a href="{{=URL('materiais','editar',args=[material.id])}}">{{=material.nome}}</a></td>
+                {{ if material.ativo: }}
+                    <td>Ativo</td>
+                {{ else: }}
+                    <td>Inativo</td>
+                {{ pass }}
+            </tr>
+        {{ pass }}
+    </tbody>
+</table>
+<br />
+<center><h3><a href="{{=URL('materiais','novo')}}">Novo Material</a></h3></center>
