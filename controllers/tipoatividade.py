@@ -20,6 +20,8 @@ def nova():
     if form.accepts(request.vars, session):
         session.flash = "Tipo de Atividade cadastrado com sucesso"
         redirect(URL('tipoatividade','lista'))
+    else:
+        session.flash = "Erro ao cadastrar o Tipo de Atividade"
     
     return dict(form=form)
     
@@ -42,5 +44,6 @@ def editar():
     if form.accepts(request.vars, session):
         session.flash = "Tipo de Atividade atualizado com sucesso"
         redirect(URL('tipoatividade','lista'))    
-    
+    else:
+        session.flash = "Erro ao atualizar o Tipo de Atividade"
     return dict(form=form)
