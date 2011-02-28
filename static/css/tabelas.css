@@ -50,7 +50,6 @@ table.tabela{
     padding-bottom: 4px;
     text-align: left;
     vertical-align: top;
-    text-align: center;    
 }
 .tabela tbody * th a{
         color: blue !important;
@@ -61,7 +60,8 @@ table.tabela{
     padding-left: 3px;
     text-align: left;
     vertical-align: top;
-    text-align: center;
+    font-size: 120%;
+    margin-bottom: 15px;
 }
 .tabela tbody tr.odd{
     background: #FFF8EA;
@@ -69,10 +69,10 @@ table.tabela{
 .tabela tbody tr.odd th{
     background: #FFE2B0;
 }
-.tabela tfoot tr td[colspan='4']{
+.tabela tfoot tr td[colspan='2']{
     text-align: right;
     font-style: italic;
-    padding-right: 4px;
+    padding-right: 2px;
 }
 .tabela tbody td a{
     background: url(down_arrow.gif) no-repeat;
@@ -80,7 +80,6 @@ table.tabela{
     min-height: 20px;
     padding-left: 20px;
     padding-right: 4px;
-    text-align: center;
 }
 
 .tabela tbody td select {
@@ -102,7 +101,6 @@ table.tabela{
     _padding-left: 2px;
     _float: inherit;
     _padding-right: inherit;
-    _text-align: center;
 }
 .tabela tfoot * th{
     border-bottom: 1px outset;
