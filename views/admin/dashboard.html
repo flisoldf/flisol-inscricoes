@@ -2,16 +2,63 @@
 
 <script type="text/javascript">
   jQuery(document).ready(function(){
-    jQuery(".status").fancybox({
-      'width': '35%',
-      'height': '45%',
+    //Fancybox
+    jQuery(".atividade").fancybox({
+      'width': '65%',
+      'height': '65%',
       'autoScale': false,
       'transictionIn': 'none',
       'transictionOut': 'none',
       'type': 'iframe'
     });
+    
+    jQuery(".usuario").fancybox({
+      'width': '45%',
+      'height': '65%',
+      'autoScale': false,
+      'transictionIn': 'none',
+      'transictionOut': 'none',
+      'type': 'iframe'
+    });    
+    
+    //DataTable
+    jQuery("#table_atividades").dataTable();
   });
 </script>   
-{{=atividades}}
+<center>
+    <h2>Lista de Atividades Cadastradas</h2>
+</center>
+<table class="display" id="table_atividades">
+    <thead>
+        <tr>
+            <th>Nome da Atividade</th>
+            <th>Palestrante</th>
+            <th>Nível</th>
+            <th>Tipo da Atividade</th>
+            <th>Arquivo da Apresentação</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ for atividade in atividades: }}
+            <tr>
+                <td><a class="atividade" href="{{=URL('atividades','detalhes',args=[atividade.id])}}">{{=atividade.titulo}}</a></td>
+                <td>
+                    <a class="usuario" href="{{=URL('usuarios','detalhes',args=[atividade.id_usuario])}}">
+                        {{=atividade.id_usuario.first_name}}
+                    </a>
+                </td>
+                <td>{{=atividade.nivel[0]}}</td>
+                <td>{{=atividade.tipo.tipo}}</td>
+                {{ if atividade.arquivo: }}
+                    <td><a href="{{=URL('default','download',args=[atividade.arquivo])}}">Arquivo da Apresentação</a></td>
+                {{ else: }}
+                    <td>Nenhuma apresentação</td>
+                {{ pass }}
+                <td>{{=atividade.status}}</td>
+            </tr>
+        {{ pass }}
+    </tbody>
+</table>
 
 
