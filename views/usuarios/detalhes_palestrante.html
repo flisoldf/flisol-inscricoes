@@ -1,0 +1,26 @@
+{{ extend 'detalhes.html' }}
+
+<h4>Detalhes do Usuário <i>"{{=usuario.first_name}}"</i></h4>
+<hr /><br />
+
+<div class="campo">Mini-currículo </div>
+{{ if minicurriculo: }}
+    <div class="dados"><p>{{=minicurriculo.mini_curriculo}}</p></div><br />
+{{ else: }}
+    <div class="dados">Nada preenchido.</div><br />
+{{ pass }}
+
+<div class="campo">Atividades Submetidas </div>
+<div class="dados">
+{{ if atividades: }}
+    <ul>
+        {{ for atividade in atividades: }}
+            <li>{{=atividade.titulo}}</li>
+        {{ pass }}
+    </ul>
+{{ else: }}
+    <h5>Nenhuma atividade submetida no sistema.</h5>
+{{ pass }}
+</div>
+
+</div>
