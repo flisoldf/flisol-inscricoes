@@ -18,6 +18,8 @@
     font-size: 120%;
 }
 
+.text {width: 65%;}
+
 .forms select {width: 40%;}
 
 .forms select[multiple="multiple"] {height: 80%;}
