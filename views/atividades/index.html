@@ -6,12 +6,30 @@ from datetime import date, datetime
 hoje = date.today()
 data_limite = date(2011, 3, 13)
 }}
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    //Fancybox
+    jQuery(".atividade").fancybox({
+      'width': '65%',
+      'height': '65%',
+      'autoScale': false,
+      'transictionIn': 'none',
+      'transictionOut': 'none',
+      'type': 'iframe'
+    });
+    
+    //DataTable
+    jQuery("#table_atividades").dataTable();
+  });
+</script>  
+
 {{if hoje <= data_limite:}}
     {{if ativ:}}
         <center>    
             <h2>Suas Atividades Cadastradas</h2>
         </center>
-        <table class="tabela">
+<table class="display" id="table_atividades">
             <thead>
                 <tr>
                     <th>Atividade</th>
@@ -24,7 +42,7 @@ data_limite = date(2011, 3, 13)
             </thead>
             {{ for atividade in ativ: }}
                 <tr>
-                    <td>{{=atividade.titulo}}</td>
+                    <td><a href="{{=URL('atividades','editar',args=[atividade.id])}}">{{=atividade.titulo}}</a></td>
                     <td>{{=atividade.tipo.tipo}}</td>
                     <td>{{=atividade.nivel[0]}}</td>
                     <td>{{=atividade.duracao.duracao}} hora(s)</td>
@@ -33,7 +51,7 @@ data_limite = date(2011, 3, 13)
                             <a href="{{=URL('default','download',args=[atividade.arquivo])}}">Material da Apresentação</a>
                         </td>
                     {{ else: }}
-                        <td>Sem Apresentação</td>
+                        <td>Nenhuma apresentação enviada</td>
                     {{pass}}
                     <td>{{=atividade.status}}</td>
                 </tr>
