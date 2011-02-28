@@ -21,7 +21,7 @@ def nova():
     if form.accepts(request.vars,session):
         session.flash = "Sala cadastrada com sucesso"
         redirect(URL('locais','lista'))
-    else:
+    elif form.errors:
         session.flash = "Erro ao cadastrar o Local"
     
     return dict(form=form)
@@ -43,7 +43,7 @@ def editar():
     if form.accepts(request.vars, session):
         session.flash = 'Registro atualizado com sucesso'
         redirect(URL('locais', 'lista'))
-    else:
+    elif form.errors:
         session.flash = "Erro ao cadastrar o Local"
     
     # Renderizando o form no arquivo nova.html

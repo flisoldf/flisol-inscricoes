@@ -61,7 +61,7 @@ def novo():
             redirect(URL('usuarios','lista',args=['palestrantes']))
         elif request.vars.grupo == 1:
             redirect(URL('usuarios','lista',args=['administradores']))
-    else:
+    elif form.errors:
         session.flash = "Erro ao cadastrar o Usuário"
             
     return dict(form=form)
@@ -84,7 +84,7 @@ def editar():
     
     if form.accepts(request.vars,session):
         session.flash = "Usuário cadastrado com sucesso."
-    else:
+    elif form.errors:
         session.flash = "Erro ao cadastrar o usuário. Tente novamente."
     
     return dict(form=form)

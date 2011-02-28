@@ -25,7 +25,7 @@ def index():
         if palestrante == id_user:
             ativ = db(atividade.id_usuario==palestrante).select()
             return dict(ativ=ativ, id_user=int(palestrante))
-        else:
+        elif form.errors:
             return dict(ativ=None, id_user=int(palestrante))        
     else:
         session.flash = "Escreva o seu mini-curriculo antes de cadastrar sua palestra."
@@ -53,7 +53,7 @@ def nova():
     # Popula o respectivo campo do id do currículo do usuário
     if not curriculo_id:
         redirect(URL('atividades', 'minicurriculo'))
-    else:
+    else:        
         form.vars.id_curriculo = curriculo_id.id
     
     # Popula o status da atividade: 0 = Rejeitado, 1 = Aprovado, 2 = Pendente
@@ -63,7 +63,7 @@ def nova():
     if form.accepts(request.vars, session):
         session.flash = "Atividade submetida com sucesso"
         redirect(URL('atividades', 'index', args=session.auth.user.id))
-    else:
+    elif form.errors:
         session.flash = "Erro ao inserir a Atividade. Abra o formulário e tente novamente."
         
     return dict(form=form)
@@ -91,7 +91,7 @@ def editar():
     if form.accepts(request.vars, session):
         session.flash = "Atividade atualizado com sucesso."
         redirect(URL('atividades', 'index', args=session.auth.user.id))
-    else:
+    elif form.errors:
         session.flash = "Erro ao inserir a Atividade. Abra o formulário e tente novamente."
     
     return dict(form=form)
@@ -124,7 +124,7 @@ def minicurriculo():
     if form.accepts(request.vars, session):
         session.flash = 'Currículo atualizado com sucesso'
         redirect(URL('default', 'index'))
-    else:
+    elif form.errors:
         session.flash = "Mini-currículo não foi cadastrado com sucesso. Tente novamente"
     
     return dict(form=form)

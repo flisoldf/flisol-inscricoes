@@ -21,7 +21,7 @@ def novo():
     if form.accepts(request.vars,session):
         session.flash = "Material cadastrado com sucesso."
         redirect(URL('materiais','lista'))
-    else:
+    elif form.errors:
         session.flash = "Erro ao inserir o material. Verifique os campos se estão corretos."
     
     return dict(form=form)
@@ -47,7 +47,7 @@ def editar():
     if form.accepts(request.vars,session):
         session.flash = "Material atualizado com sucesso."
         redirect(URL('materiais','lista'))
-    else:
+    elif form.errors:
         session.flash = "Erro ao atualizar o material. Tente novamente."
     
     return dict(form=form)

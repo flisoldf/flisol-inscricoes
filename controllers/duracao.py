@@ -24,7 +24,7 @@ def novo():
     if form.accepts(request.vars,session):
         session.flash = "Duração cadastrado com sucesso."
         redirect(URL('duracao','lista'))
-    else:
+    elif form.errors:
         session.flash = "Falha ao inserir a duração. Tente novamente."
     
     return dict(form=form)
@@ -45,7 +45,7 @@ def editar():
     if form.accepts(request.vars,session):
         session.flash = "Duração atualizado com sucesso."
         redirect(URL('duracao','lista'))
-    else:
+    elif form.errors:
         session.flash = "Falha ao inserir a duração. Tente novamente."
     
     return dict(form=form)    
