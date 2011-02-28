@@ -52,6 +52,7 @@ def user():
             user = db(db.usuarios.username == request.vars.username).select().first()
             id_group = request.vars.grupo
 
+            # Insere o relacionamento entre o usuario e seu grupo de permissao
             auth.add_membership(id_group, user.id)
 
             # Exibe mensagem de sucesso
