@@ -36,7 +36,10 @@ if 'auth' in globals():
                     (T('Home'), False, URL('admin','dashboard'), []),
                     (T('Locais'), False, URL('locais','lista'), []),
                     (T('Tipo Atividade'), False, URL('tipoatividade','lista'), []),
+                    (T('Cadastro Materiais'), False, URL('materiais','lista'), []),                    
+                    # (T('Cadastro Duracao'), False, URL('duracao','lista'), []),                       
                     (T('Cadastro Usuarios'), False, None, [
+                        (T('Usuario'), False, URL('usuarios','novo'), []),                    
                         (T('Inscritos'), False, URL('usuarios','lista', args=['inscritos']), []),
                         (T('Palestrantes'), False, URL('usuarios','lista', args=['palestrantes']), []),
                         (T('Administradores'), False, URL('usuarios','lista', args=['administradores']), [])
