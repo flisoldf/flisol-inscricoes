@@ -1,3 +1,47 @@
 {{ extend 'layout.html' }}
-{{=table}}
 
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    //Fancybox
+    jQuery(".usuario").fancybox({
+      'width': '45%',
+      'height': '65%',
+      'autoScale': false,
+      'transictionIn': 'none',
+      'transictionOut': 'none',
+      'type': 'iframe'
+    });
+    
+    //DataTable
+    jQuery("#table_usuarios").dataTable();
+  });
+</script>   
+
+<table class="display" id="table_usuarios">
+    <thead>
+        <tr>
+            <th>Nome do Usuário</th>
+            <th>Login de Acesso</th>
+            <th>E-mail</th>
+            <th>Perfil</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ for usuario in usuarios: }}
+            <tr>
+                {{ if usuario.grupo.role == 'Palestrante': }}  
+                    <td>
+                        <a class="usuario" href="{{=URL('usuarios','detalhes',args=[tipo_usuario,usuario.id])}}">
+                            {{=usuario.first_name}}
+                        </a>
+                    </td>
+                {{ else: }}
+                    <td>{{=usuario.first_name}}</td>
+                {{ pass }}
+                <td>{{=usuario.username}}</td>
+                <td>{{=usuario.email}}</td>
+                <td>{{=usuario.grupo.role}}</td>
+            </tr>
+        {{ pass }}
+    </tbody>
+</table>
