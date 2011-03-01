@@ -95,11 +95,11 @@ def detalhes():
     Exibe os detalhes do usuario selecionado
     """
     id_usuario = request.args(0) or redirect(URL('usuarios','lista'))
-    
-    # ID do Grupo 3 - Palestrante
-    query = (db.usuarios.id == id_usuario)
+
+    # Consultando o usuario selecionado
+    query = db.usuarios.id == id_usuario
     usuario = db(query).select().first()
-    
+
     # Pesquisa o mini curriculo do usuario        
     minicurriculo = db(db.curriculo.id_usuario == id_usuario).select().first()
     
