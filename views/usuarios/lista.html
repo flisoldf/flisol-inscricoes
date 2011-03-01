@@ -31,7 +31,7 @@
             <tr>
                 {{ if usuario.grupo.role == 'Palestrante': }}  
                     <td>
-                        <a class="usuario" href="{{=URL('usuarios','detalhes',args=[tipo_usuario,usuario.id])}}">
+                        <a class="usuario" href="{{=URL('usuarios','detalhes',args=[usuario.id])}}">
                             {{=usuario.first_name}}
                         </a>
                     </td>
