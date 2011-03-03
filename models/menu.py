@@ -17,7 +17,7 @@ response.meta.copyright = 'Copyright 2011'
 
 # Caso o prazo de inscricoes estoure, então desabilita a inscrição de palestrantes
 hoje = date.today()
-prazo_atividade = date(2011, 3, 13)
+prazo_atividade = date(2011, 3, 18)
 
 ##########################################
 ## Criando seus menus
