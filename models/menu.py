@@ -59,9 +59,9 @@ if 'auth' in globals():
                     ]           
         if auth.has_membership('Participante'):
                     response.menu = [
-                        (T('Home'), False, URL(request.application,'default','index'), []),
-                        (T('Atividades Inscritas'), False, URL(request.application,'default','index'), []),
-                        (T('Certificados'), False, URL(request.application,'default','index'), [])
+                        (T('Home'), False, URL(request.application,'participante','index'), []),
+                        (T('Atividades'), False, URL(request.application,'participante','atividades'), []),
+                        (T('Certificados'), False, URL(request.application,'participante','certificados'), [])
                         ]                
 
 
