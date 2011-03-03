@@ -98,3 +98,10 @@ CREATE TABLE atividades(
     checa_apresentacao CHAR(512)
 );
 success!
+timestamp: 2011-03-03T01:23:22.218687
+CREATE TABLE participantes(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    atividade INTEGER REFERENCES atividades(id) ON DELETE CASCADE,
+    usuario INTEGER REFERENCES usuarios(id) ON DELETE CASCADE
+);
+success!
