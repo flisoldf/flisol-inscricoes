@@ -171,8 +171,8 @@ if 'auth' in globals():
             custom_auth_table.grupo.requires = IS_IN_DB(db,'grupos.id', 'grupos.role',
                 zero=T('escolha_grupo'), error_message=T('is_choose'))
     else:
-        # query = db.grupos.role != 'Administrador'
-        query = (db.grupos.role != 'Administrador') & (db.grupos.role != 'Participante')
+        query = db.grupos.role != 'Administrador'
+        # query = (db.grupos.role != 'Administrador') & (db.grupos.role != 'Participante')
         custom_auth_table.grupo.requires = IS_IN_DB(db(query),
             'grupos.id', 'grupos.role', zero=T('escolha_grupo'), error_message=T('is_choose'))        
 
@@ -317,3 +317,16 @@ atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao
 atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
 atividade.status.requires = IS_IN_SET(['Pendente','Aprovada','Rejeitada'], zero='Selecione...', \
         error_message='Selecione um status para a atividade')
+
+
+###########################################
+# Tabela de Participantes em Atividades   #
+###########################################
+
+participantes = db.define_table('participantes',
+                    Field('atividade', atividade),
+                    Field('usuario', usuarios),
+                    format = lambda r: r.atividade.titulo)
+
+participantes.atividade.requires = IS_IN_DB(db, 'atividades.id')
+participantes.usuario.requires = IS_IN_DB(db, 'usuarios.id')
