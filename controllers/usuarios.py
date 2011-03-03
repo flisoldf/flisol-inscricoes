@@ -89,7 +89,7 @@ def editar():
     
     return dict(form=form)
     
-@auth.requires_membership('Administrador')
+@auth.requires(auth.has_membership('Administrador') or auth.has_membership('Participante'))
 def detalhes():
     """
     Exibe os detalhes do usuario selecionado
