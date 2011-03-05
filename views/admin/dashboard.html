@@ -36,6 +36,7 @@
             <th>Nível</th>
             <th>Tipo da Atividade</th>
             <th>Arquivo da Apresentação</th>
+            <th>Local da Atividade</th>
             <th>Status</th>
         </tr>
     </thead>
@@ -54,6 +55,11 @@
                     <td><a href="{{=URL('default','download',args=[atividade.arquivo])}}">Arquivo da Apresentação</a></td>
                 {{ else: }}
                     <td>Nenhuma apresentação</td>
+                {{ pass }}
+                {{ if atividade.id_sala: }}
+                    <td>{{=atividade.id_sala.nome}}</td>
+                {{ else: }}
+                    <td>Sem local</td>
                 {{ pass }}
                 <td>{{=atividade.status}}</td>
             </tr>
