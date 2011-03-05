@@ -285,7 +285,7 @@ Tabela para inserção de atividades pelo palestrante
 
 atividade = db.define_table('atividades',
                 Field('id_usuario', usuarios,label="Palestrante"),
-                Field('id_sala', 'integer',label="Local da Palestra"),
+                Field('id_sala', sala,label="Local da Palestra"),
                 Field('id_curriculo', 'integer'),
                 Field('titulo', label='Título*'), # Título da atividade
                 Field('descricao', 'text', label='Descrição*'), # Descrição da atividade
@@ -304,16 +304,28 @@ atividade = db.define_table('atividades',
 
 atividade.arquivo.requires = IS_EMPTY_OR(IS_UPLOAD_FILENAME(extension='(pdf|odp)$', \
         lastdot=True, error_message='Sua apresentação deve estar no formato ODP ou PDF'))
+        
 atividade.descricao.requires = IS_NOT_EMPTY(error_message='Faça uma breve descrição da sua atividade')
+
 atividade.tag.writable=atividade.tag.readable=False # Oculatando as palavras chave, para uso posterior
+
 atividade.id_curriculo.writable=atividade.id_curriculo.readable=False
+
+
+atividade.id_sala.requires = IS_IN_DB(db,'sala.id', '%(nome)s', zero='Selecione...',\
+        error_message = 'Selecione uma sala cadastrada.')
+
 atividade.nivel.requires = IS_IN_SET(['Básico', 'Intermediário', 'Avançado'], zero='Selecione...', \
         error_message='Selecione o nível de sua atividade: Básico, Intermediário ou Avançado')
-atividade.id_sala.writable=atividade.id_sala.readable=False # Não permite a visualização nem edição do campo id_sala
+        
 atividade.titulo.requires = IS_NOT_EMPTY(error_message='Informe o título de sua atividade')
+
 atividade.tipo.requires = IS_IN_DB(db, 'tipo_atividade.id', '%(tipo)s', zero='Selecione...', \
         error_message='Tipo da atividade: Palestra, Mini-Curso, InstallFest...') # Preenche a lista tipo atividade
+        
 atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao)s', zero='Selecione...', error_message='Informe a duração da atividade')
+
 atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
+
 atividade.status.requires = IS_IN_SET(['Pendente','Aprovada','Rejeitada'], zero='Selecione...', \
         error_message='Selecione um status para a atividade')
