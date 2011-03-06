@@ -36,7 +36,8 @@
             <th>Palestrante</th>
             <th>Nível</th>
             <th>Tipo da Atividade</th>
-            <th>Arquivo da Apresentação</th>
+            <th>Inscritos</th>
+            <th>Inscrição</th>
         </tr>
     </thead>
     <tbody>
@@ -51,14 +52,18 @@
                 </td>
                 <td>{{=atividade.nivel[0]}}</td>
                 <td>{{=atividade.tipo.tipo}}</td>
-                {{ if atividade.arquivo: }}
-                    <td><a href="{{=URL('default','download',args=[atividade.arquivo])}}">Arquivo da Apresentação</a></td>
-                {{ else: }}
-                    <td>Nenhuma apresentação</td>
-                {{ pass }}
+                <td>{{=vagas[atividade.id]}}</td>
+                <td>
+                    {{ for inscrito in inscricao: }}
+                        {{ if inscrito.atividade == atividade.id: }}
+                            <a href="{{=URL('participante', 'inscricao', args=['desinscrever', atividade.id])}}">Desinscrever</a>
+                            {{ break }}
+                        {{ else: }}
+                            <a href="{{=URL('participante', 'inscricao', args=['inscrever', atividade.id])}}">Inscrever</a>
+                        {{ pass }}
+                    {{ pass }}
+                </td>
             </tr>
         {{ pass }}
     </tbody>
 </table>
-
-
