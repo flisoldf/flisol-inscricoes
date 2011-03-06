@@ -37,9 +37,12 @@ def nova():
     Essa função é para inserção de novas atividades
     """
     
-    # Ocultando o campo status
+    # Ocultando o campo status e a sala
     db.atividades.status.readable = \
     db.atividades.status.writable = False
+    
+    db.atividades.id_sala.readable = \
+    db.atividades.id_sala.writable = False
     
     # Gera o formulário para inserir novas atividades
     form = SQLFORM(atividade,formstyle='divs',submit_button=T('Save'),_class='forms')
@@ -131,6 +134,13 @@ def minicurriculo():
     
 @auth.requires_membership('Administrador')
 def detalhes():
+    """
+    Exibe todos os detalhes da atividade selecionada.
+    Com isso somente dois campos serão exibidos para edição:
+    
+     - Status da Atividade;
+     - Sala da Atividade;
+    """
     id_atividade = request.args(0)
     
     # Pesquisa a atividade selecionada
