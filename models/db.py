@@ -342,3 +342,34 @@ controle = db.define_table('controle',
 
 controle.atividade.requires = IS_IN_DB(db, 'atividades.id')
 controle.usuario.requires = IS_IN_DB(db, 'usuarios.id')
+
+###########################################
+# Tabela - Questionário Tecnológico       #
+###########################################
+
+"""
+questionario = db.define_table('questionario',
+                        Field('site'),
+                        Field('idade', 'integer'),
+                        Field('sexo', 'list:string', widget=SQLFORM.widgets.radio.widget),
+                        Field('escolaridade', 'list:string', widget=SQLFORM.widgets.radio.widget),
+                        Field('estudando', 'list:string', label='Está estudando?', widget=SQLFORM.widgets.radio.widget),
+                        Field('curso', label='Qual curso?', comment='Caso a resposta anterior seja Sim, especifique o curso'),
+                        Field('twitter'),
+                        Field('facebook'),
+                        Field('sl', 'list:string', widget=SQLFORM.widgets.radio.widget, label='Usa Software Livre?'),
+                        Field('so', label='Qual seu sistema operacional?'),
+                        Field('trabalha', 'list:string', label='Trabalha na área de tecnologia?', widget=SQLFORM.widgets.radio.widget),
+                        Field('portatil', 'list:string', label='Possui computador portátil?', widget=SQLFORM.widgets.radio.widget, comment='notebook, netbook, iPad...'),
+                        Field('banda_larga', 'list:string', label='Possui internet banda larga em casa?', widget=SQLFORM.widgets.radio.widget),
+                        Field('desktop', 'list:string', label='Possui computador desktop em casa?', widget=SQLFORM.widgets.radio.widget),
+                        Field('internet_celular', 'list:string', label='Seu celular acessa a internet?', widget=SQLFORM.widgets.radio.widget),
+                        Field('acesso_internet', 'list:string', label='De onde você acessa internet?'),
+                        Field('voluntario_projeto', 'list:string', widget=SQLFORM.widgets.radio.widget,
+                                        label='Você é voluntário para participar de projetos de Software Livre?'),
+                        Field('voluntario_palestras', 'list:string', widget=SQLFORM.widgets.radio.widget,
+                                        label='Você é voluntário para ministrar palestra de Software Livre em escolas?'),
+                        Field('newsletter', 'boolean', default='True', label='Desejo receber informações por email da Associação Candangos de Software Livre'))
+
+# Validadores da tabela Questionario
+"""
