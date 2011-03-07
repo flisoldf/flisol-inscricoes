@@ -20,6 +20,8 @@ def index():
             redirect(URL('atividades','index',args=auth.user.id))
         if auth.has_membership('Administrador'):
             redirect(URL('admin','dashboard'))
+        if auth.has_membership('Participante'):
+            redirect(URL('participante', 'index'))
     else:
         redirect(URL('default','user',args='register'))
     
