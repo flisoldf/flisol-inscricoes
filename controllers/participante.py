@@ -27,11 +27,18 @@ class CalculaVagas:
         # Consulta a quantidade de participantes inscritos na atividade selecionada
         participantes = db(db.controle.atividade==self.atividade).count()
 
-        # Define a variável vagas com a quantidade de inscritos/vagas totais na atividade. Ex. 18/20
-        self.vagas = '%d/%d' %(participantes, lugares[0].id_sala.lugares)
+        if lugares:
+            # Define a variável vagas com a quantidade de inscritos/vagas totais na atividade. Ex. 18/20
+            self.vagas = '%d/%d' %(participantes, lugares[0].id_sala.lugares)
 
-        # Retorna a quantidade total de lugares da atividade
-        self.lugares = lugares[0].id_sala.lugares - participantes
+            # Retorna a quantidade total de lugares da atividade
+            self.lugares = lugares[0].id_sala.lugares - participantes
+
+        else:
+            # Se não houver salas cadastradas e/ou definidas nas atividades, retorna 0/0 para vagas
+            # E retorna em lugares o valor 10000, ou seja, ilimitado por não haver definição.
+            self.vagas = '0/0'
+            self.lugares = '10000'
 
     def disponivel(self):
         # Calcula se ainda há lugares disponíveis na sala.
