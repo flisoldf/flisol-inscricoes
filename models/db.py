@@ -15,7 +15,8 @@ if request.env.web2py_runtime_gae:            # Caso estiver executando o ambien
     from google.appengine.api.memcache import Client
     session.connect(request, response, db = MEMDB(Client()))
 else:                                         # senao, use um banco de dados relacional
-    db = DAL('sqlite://flisol_inscricao.sqlite')
+    # db = DAL('sqlite://flisol_inscricao.sqlite')
+    db = DAL('mysql://gilsonsbf_flisol:ff2b205b@localhost/gilsonsbf_flisol')
 
 ## Caso não precisar mais da sessão
 # session.forget()
