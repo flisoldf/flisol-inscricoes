@@ -77,7 +77,7 @@ def editar():
     db.usuarios.id.readable = \
     db.usuarios.id.writable = False
     
-    form = SQLFORM(db.usuarios, id_user, submit_button=T('Save'))
+    form = SQLFORM(db.usuarios, id_user, submit_button=T('Save'),deletable=True)
     
     # Renderiza formulario no novo.html
     response.view = 'usuarios/novo.html'
