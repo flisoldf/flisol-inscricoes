@@ -29,7 +29,7 @@
 'Duracao': 'Duração* ',
 'Edit current record': 'Editar registro atual',
 'Email': 'E-mail',
-'Email sent': 'Email sent',
+'Email sent': 'Seu e-mail foi enviado com sucesso. Em alguns segundos você já deve ter recebido.',
 'Empty': 'Não pode ser vazio.',
 'First': 'First',
 'Group %(group_id)s created': 'Grupo %(group_id)s criado com sucesso.',
