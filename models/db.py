@@ -32,9 +32,10 @@ plugins = PluginManager()                      # Gerencia todos os plugins insta
 crud.settings.auth = None                      # força autorizacao no CRUD
 
 # Dados para envio de emails
-mail.settings.server = 'logging' or 'smtp.gmail.com:587'  # seu servidor SMTP
-mail.settings.sender = 'you@gmail.com'         # seu email
-mail.settings.login = 'username:password'      # suas credenciais ou vazio (caso nao precise de autenticacao)
+mail.settings.server = 'smtp.gmail.com:587'  # seu servidor SMTP
+mail.settings.sender = 'flisol.inscription@gmail.com'         # seu email
+mail.settings.login = 'flisol.inscription@gmail.com:FlisolDF123!@#'      # suas credenciais ou vazio (caso nao precise de autenticacao)
+mail.settings.tls = True    
 
 """
 ##############################################################################################################
@@ -133,8 +134,18 @@ auth.settings.hmac_key = 'sha512:1d718a94-81cf-4274-8ac1-42207b203246'   # antes
 auth.settings.mailer = mail                    # para verificação de email
 
 # Habilitando verificacao de senha e desabilitando aprovacao de cadastro
-auth.settings.registration_requires_verification = False
+
+auth.settings.registration_requires_verification = True
 auth.settings.registration_requires_approval = False
+auth.settings.reset_password_requires_verification = True
+
+# Mensagem de alteracao de senha
+auth.messages.reset_password = 'Clique nesse endereço para alterar sua senha: http://' + \
+    request.env.http_host + \
+    URL(r=request,c='default',f='user',args=['reset_password']) + \
+    '/%(key)s'
+
+
 
 # Traduzindo o rotulo do campo Submit
 auth.messages.submit_button = T('Submit')
