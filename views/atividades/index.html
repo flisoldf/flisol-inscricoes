@@ -32,6 +32,7 @@ data_limite = date(2011, 3, 13)
 <table class="display" id="table_atividades">
             <thead>
                 <tr>
+                    <th>Opções</th>
                     <th>Atividade</th>
                     <th>Tipo</th>
                     <th>Nível</th>
@@ -42,7 +43,23 @@ data_limite = date(2011, 3, 13)
             </thead>
             {{ for atividade in ativ: }}
                 <tr>
-                    <td><a href="{{=URL('atividades','editar',args=[atividade.id])}}">{{=atividade.titulo}}</a></td>
+                    <td>
+                      <div class="options">
+                        <ul>
+                          <li>
+                            <a href="{{=URL('atividades','cancelar',args=[atividade.id])}}">
+                              <img src="{{=URL('static','images/cancel_entries.png')}}" alt="Cancelar" title="Cancelar Atividade"/>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="{{=URL('atividades','editar',args=[atividade.id])}}">
+                              <img src="{{=URL('static','images/edit_entries.png')}}" alt="Editar" title="Editar Atividade"/>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <td>{{=atividade.titulo}}</td>
                     <td>{{=atividade.tipo.tipo}}</td>
                     <td>{{=atividade.nivel[0]}}</td>
                     <td>{{=atividade.duracao.duracao}} hora(s)</td>

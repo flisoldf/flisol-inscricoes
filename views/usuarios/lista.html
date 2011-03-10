@@ -20,6 +20,7 @@
 <table class="display" id="table_usuarios">
     <thead>
         <tr>
+            <th>Opções</th>
             <th>Nome do Usuário</th>
             <th>Login de Acesso</th>
             <th>E-mail</th>
@@ -29,15 +30,12 @@
     <tbody>
         {{ for usuario in usuarios: }}
             <tr>
-                {{ if usuario.grupo.role == 'Palestrante': }}  
-                    <td>
-                        <a class="usuario" href="{{=URL('usuarios','detalhes',args=[usuario.id])}}">
-                            {{=usuario.first_name}}
-                        </a>
-                    </td>
-                {{ else: }}
-                    <td>{{=usuario.first_name}}</td>
-                {{ pass }}
+                <td><a href="{{=URL('usuarios','editar',args=[usuario.id])}}">Editar</a></td>
+                <td>
+                    <a class="usuario" href="{{=URL('usuarios','detalhes',args=[usuario.id])}}">
+                        {{=usuario.first_name}}
+                    </a>
+                </td>
                 <td>{{=usuario.username}}</td>
                 <td>{{=usuario.email}}</td>
                 <td>{{=usuario.grupo.role}}</td>
