@@ -15,8 +15,8 @@ if request.env.web2py_runtime_gae:            # Caso estiver executando o ambien
     from google.appengine.api.memcache import Client
     session.connect(request, response, db = MEMDB(Client()))
 else:                                         # senao, use um banco de dados relacional
-    # db = DAL('sqlite://flisol_inscricao.sqlite')
-    db = DAL('mysql://gilsonsbf_flisol:ff2b205b@localhost/gilsonsbf_flisol')
+    db = DAL('sqlite://flisol_inscricao.sqlite')
+    #db = DAL('mysql://gilsonsbf_flisol:ff2b205b@localhost/gilsonsbf_flisol')
 
 ## Caso não precisar mais da sessão
 # session.forget()
@@ -297,7 +297,7 @@ atividade = db.define_table('atividades',
                 Field('arquivo', 'upload', label='Apresentação'), # Campo para envio da apresentação em PDF ou ODP
                 Field('materiais', 'list:reference materiais', # Lista de materiais necessários para o palestrante
                       label='Precisa de algum desses materiais?'),
-                Field('status', default='Pendente'), # Status da atividade: Rejeitada / Aprovada / Pendente
+                Field('status', default='Pendente'), # Status da atividade: Rejeitada / Aprovada / Pendente / Cancelado
                 Field('observacoes', 'text', label='Observações'),
                 Field('checa_apresentacao', label='Você apresentou essa atividade em outro evento? Qual?'))
 
@@ -328,7 +328,7 @@ atividade.duracao.requires = IS_IN_DB(db, 'duracao.id', '%(duracao)s %(descricao
 
 atividade.id_usuario.writable=atividade.id_usuario.readable=False # Não permite a visualização nem edição do campo ID Usuário
 
-atividade.status.requires = IS_IN_SET(['Pendente','Aprovada','Rejeitada'], zero='Selecione...', \
+atividade.status.requires = IS_IN_SET(['Pendente','Aprovada','Rejeitada','Cancelada'], zero='Selecione...', \
         error_message='Selecione um status para a atividade')
 
 
