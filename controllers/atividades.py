@@ -183,3 +183,24 @@ def detalhes():
     
     return dict(atividade = atividade, form = form)
     
+def cancelar():
+    """
+    Cancela a atividade selecionada
+    pelo palestrante.
+    """
+    
+    # Captura o ID ou redireciona
+    id_atividade = request.args(0) or redirect(URL('atividades','index'))
+    
+    # Cancela a atividade
+    db(db.atividades.id == id_atividade).update(status='Cancelada')
+    
+    # Volta para a lista de atividades cadastradas
+    redirect(URL('atividades','index'))
+    
+    # Exibe mensagem de sucesso
+    session.flash = "Atividade cancelada com sucesso."
+    
+    return dict()
+    
+    
