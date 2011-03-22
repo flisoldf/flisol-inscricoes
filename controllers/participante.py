@@ -48,15 +48,17 @@ class CalculaVagas:
             return False
 
 
-
-    
 def index():
     """
     Essa função lista todas as atividades que o participante se inscreveu.
     """
     
-    inscritos = db(db.controle.usuario==session.auth.user.id).select()
-    return dict(inscritos=inscritos)
+    # As instrucoes comentadas abaixo é pelo motivo de não precisar mais
+    # os cadastros de inscricoes
+    #inscritos = db(db.controle.usuario==session.auth.user.id).select()
+    #return dict(inscritos=inscritos)
+    response.view = 'participante/sucesso_inscricao.html'
+    return dict()
 
 def atividades():
     """
