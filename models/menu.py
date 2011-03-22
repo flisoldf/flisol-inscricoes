@@ -60,7 +60,8 @@ if 'auth' in globals():
         if auth.has_membership('Participante'):
                     response.menu = [
                         (T('Home'), False, URL(request.application,'participante','index'), []),
-                        (T('Atividades'), False, URL(request.application,'participante','atividades'), []),
+                        # Comentado pelo motivo de nao precisar de efetuar o cadastro de atividades nessa edicao
+                        # (T('Atividades'), False, URL(request.application,'participante','atividades'), []),
                         (T('Certificados'), False, URL(request.application,'participante','certificados'), [])
                         ]                
 
