@@ -1,7 +1,19 @@
-/uploads/atividades.arquivo.b56ae448d549b70e.52657175697369746f73202d2053697374656d6120646520496e73637269c3a7c3a36f20464c49534f4c.txt
-/uploads/atividades.arquivo.8c7b15492a0d2ba2.70726f6a65746f63616d696c6c612e706466.pdf
-
 # Ignorando os arquivos de projeto do Aptana (Eclipse)
 .project
 .pydevproject
 .settings/**
+
+# Pasta Uploads
+uploads/
+
+# Pasta databases com os arquivos temporarios
+databases/$.table
+databases/$.sqlite
+databases/$.log
+
+# Pasta sessions
+sessions/
+
+# Arquivos temporarios
+*.bak
+*.swp
