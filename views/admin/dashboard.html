@@ -11,7 +11,14 @@
       'transictionOut': 'none',
       'type': 'iframe'
     });
-    
+    jQuery(".opcoes").fancybox({
+      'width': '65%',
+      'height': '65%',
+      'autoScale': false,
+      'transictionIn': 'none',
+      'transictionOut': 'none',
+      'type': 'iframe'
+    });    
     jQuery(".usuario").fancybox({
       'width': '45%',
       'height': '65%',
@@ -47,13 +54,13 @@
         <td class="options">
           <ul>
             <li>
-              <a href="{{=URL('atividades','altera_sala',args=[atividade.id])}}">
-                <img src="" alt="Vincular Sala" title="Vincular Atividade a um Local"/>
+              <a class="opcoes" href="{{=URL('atividades','detalhes',args=[atividade.id,'sala'])}}">
+                <img src="{{=URL('static','images/room_entries.png')}}" alt="Vincular Sala" title="Vincular Atividade a um Local"/>
               </a>
             </li>
             <li>
-              <a href="{{=URL('atividades','status',args=[atividade.id])}}">
-                <img src="" alt="Alterar Status" title="Alterar o status da Atividade"/>
+              <a class="opcoes" href="{{=URL('atividades','detalhes',args=[atividade.id,'status'])}}">
+                <img src="{{=URL('static','images/status.png')}}" alt="Alterar Status" title="Alterar o status da Atividade"/>
               </a>
             </li>
           </ul>
