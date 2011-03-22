@@ -31,6 +31,17 @@ def index():
         session.flash = "Escreva o seu mini-curriculo antes de cadastrar sua palestra."
         redirect(URL('atividades', 'minicurriculo'))
 
+def lista_atividades():
+    """
+    Exibe a lista de atividades submetidas 
+    somente para leitura.
+    """
+    
+    # Consulta as atividades cadastradas
+    atividades = db().select(db.atividades.ALL, orderby=db.atividades.titulo)
+    
+    return dict(atividades=atividades)
+
 @auth.requires_membership('Palestrante')
 def nova():
     """
@@ -145,42 +156,26 @@ def detalhes():
     
     # Pesquisa a atividade selecionada
     atividade = db(db.atividades.id == id_atividade).select().first()
-    
-    # Exibindo somente o campo status
+   
+    # Ocultando o ID do formulario
     db.atividades.id.readable = False
 
-    db.atividades.titulo.readable = \
-    db.atividades.titulo.writable = False
+    # Se o argumento for igual a valor sala,
+    # então exibe o formulario para associar uma sala
+    # da atividade. Caso o valor seja status, então
+    # exibe um formulário para alterar o status da atividade
+    # selecionada.
+    if request.args(1) == 'sala':
+        form = SQLFORM(db.atividades,id_atividade,fields=['id_sala'],formstyle='divs',submit_button=T('Save'))
+        return dict(atividade = atividade, form = form) 
+    elif request.args(1) == 'status':
+        form = SQLFORM(db.atividades,id_atividade,fields=['status'],formstyle='divs',submit_button=T('Save')) 
+        return dict(atividade = atividade, form = form) 
+    if form.accepts(request.vars,session):
+        session.flash = "Atividade atualizada com sucesso."
+    elif form.errors:
+        session.flash = "Erro ao atualizar a atividade, Verifique se foi atualizado a sala e/ou status."
 
-    db.atividades.descricao.readable = \
-    db.atividades.descricao.writable = False
-
-    db.atividades.nivel.readable = \
-    db.atividades.nivel.writable = False
-
-    db.atividades.tipo.readable = \
-    db.atividades.tipo.writable = False
-
-    db.atividades.duracao.readable = \
-    db.atividades.duracao.writable = False
-
-    db.atividades.tag.readable = \
-    db.atividades.tag.writable = False
-
-    db.atividades.arquivo.readable = \
-    db.atividades.arquivo.writable = False
-
-    db.atividades.materiais.readable = \
-    db.atividades.materiais.writable = False
-
-    db.atividades.observacoes.readable = \
-    db.atividades.observacoes.writable = False
-
-    db.atividades.checa_apresentacao.readable = \
-    db.atividades.checa_apresentacao.writable = False
-
-    form = crud.update(db.atividades, id_atividade) 
-    
     return dict(atividade = atividade, form = form)
     
 def cancelar():
