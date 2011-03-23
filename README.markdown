@@ -1,7 +1,7 @@
 #Sistema de Inscrições FLISOL
 Esse sistema controla e gerencia todo o processo de inscrição de atividades (palestras, install fest, oficinas) do evento, como também de quem vai participar. Com isso, o intuito deste é tornar um sistema exemplo para todos os outros eventos do FLISOL em toda a América Latina.
 
-Esse sistema está sendo desenvolvido pelo [GruPy-DF](http://groups.google.com/group/grupy-df) (com dois dos moderadores da comunidade, [Bruno Barbosa](http://algoritmizando.com) e Gilson Filho(http://gilsondev.com)) em parceria com a [ACSL](http://www.acsl.blog.br/) (Associação Candango de Software Livre).
+Esse sistema está sendo desenvolvido pelo [GruPy-DF](http://groups.google.com/group/grupy-df) (com dois dos moderadores da comunidade, [Bruno Barbosa](http://algoritmizando.com) e [Gilson Filho](http://gilsondev.com)) em parceria com a [ACSL](http://www.acsl.blog.br/) (Associação Candango de Software Livre).
 
 Algumas das funcionalidades abaixo:
 
