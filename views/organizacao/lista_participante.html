@@ -1,0 +1,35 @@
+{{ extend 'layout.html' }}
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+
+    jQuery(".a_partir").click(function(){
+        jQuery(".apartir").fadeIn();
+    });
+
+  });
+</script>
+
+<center>
+    <h3>Escolha o tipo de lista que deseja imprimir:</h3>
+
+
+    <div id="tipo_imprimir">
+        <ul>
+            <li><h4><a href="{{=URL('organizacao', 'lista_todos')}}">Todos os Participantes</a></h4></li>
+            <li><h4><a href="#" class="a_partir">À partir de um ID</a></h4></li>
+        </ul>
+    </div>
+
+    <div class="apartir hidden">
+        <center>
+            {{=form}}
+        </center>
+    </div>
+</center>
+    
+
+
+
+
+
