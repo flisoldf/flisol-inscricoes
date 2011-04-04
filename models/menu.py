@@ -69,11 +69,9 @@ if 'auth' in globals():
             response.menu = [
                 (T('Listar Inscritos'), False, URL(request.application, 'organizacao', 'listar'), []),
                 (T('Cadastrar Participante'), False, URL(request.application, 'organizacao', 'cadastro'), []),
-                (T('Imprimir'), False, URL(request.application, 'organizacao', 'imprimir'),
+                (T('Imprimir'), False, None,
                     [
                     (T('Lista em Branco'), False, URL(request.application, 'organizacao', 'lista_vazia'), []),
                     (T('Lista de Participantes'), False, URL(request.application, 'organizacao', 'lista_participante'), [])
                     ])
             ]
-
-
