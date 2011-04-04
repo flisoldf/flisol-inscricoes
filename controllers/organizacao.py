@@ -78,10 +78,14 @@ def listar():
     ##################
 
     p_ok = ['confirmacao']
+    p_cert = ['certificado']
     for confirmado in confirmacao:
-        p_ok.append(confirmado.id_usuario)
-    
-    return dict(usuarios=usuarios, confirmacao=p_ok)
+        if confirmado.hora_checkin:
+            p_ok.append(confirmado.id_usuario)
+        if confirmado.certificado == True:
+            p_cert.append(confirmado.id_usuario)
+
+    return dict(usuarios=usuarios, confirmacao=p_ok, certificado=p_cert)
 
 @auth.requires_membership('Organização')
 def checkin():
@@ -103,9 +107,14 @@ def checkin():
 
     # Efetuando uma consulta na tabela checkin, para verificar se o usuário já
     #   confirmou sua participação no evento
-    confirmacao = db(db.checkin.id_usuario == usuario).select()
+    query_confirm = (db.checkin.id_usuario == usuario)
+    confirmacao = db(query_confirm).select()
 
-    if confirmacao:
+    # Guarda na variável horário, a hora em que foi realizado o checkin do usuário
+    horario = confirmacao[0].hora_checkin if confirmacao else None
+    
+    # Verifica se o usuário já possui registro no sistema.
+    if horario:
         # Captura ID da confirmação do usuário na tabela checkin
         id_confirm = confirmacao[0].id
 
@@ -115,6 +124,11 @@ def checkin():
 
         db.checkin.id_usuario.writable = \
             db.checkin.id_usuario.readable = False
+
+        # Verifica se o certificado já está habilitado para download,
+        #   Caso positivo, transforma o checkin da hora em somente leitura
+        if confirmacao[0].certificado == True:
+            db.checkin.hora_checkin.writable = False
 
         # Retorna o formulário da tabela checkin para atualização e/ou liberação do certificado
         certificado = SQLFORM(db.checkin, id_confirm, submit_button='Salvar')
@@ -131,27 +145,37 @@ def checkin():
         ##################
 
         if certificado.accepts(request.vars, session):
-            session.flash = 'Confirmação do usuário efetuada com sucesso.'
+            session.flash = 'Registro atualizado'
             redirect(URL('organizacao', 'listar'))
             
         return dict(certificado=certificado, usuarios=check_user, confirmar=None)
 
     else:
-        # Oculta os campos certificado e id_usuario
+
+        id_confirm = confirmacao[0].id if confirmacao else None
+
+        # Oculta os campos certificado, id e id_usuario
         db.checkin.certificado.writable = \
             db.checkin.certificado.readable = False
 
         db.checkin.id_usuario.writable = \
             db.checkin.id_usuario.readable = False
 
+        db.checkin.id.writable = \
+            db.checkin.id.readable = False
+
         # Retorna o formulário da tabela checkin para preenchimento
-        confirmar = SQLFORM(db.checkin, submit_button='Salvar')
+        if not confirmacao:
+            confirmar = SQLFORM(db.checkin, submit_button='Salvar')
+        else:
+            confirmar = SQLFORM(db.checkin, id_confirm, submit_button='Salvar')
 
         # Preenche automaticamente o campo id_usuario da tabela checkin de acordo com o valor passado na URL
         confirmar.vars.id_usuario = usuario
-
+        confirmar.vars.hora_checkin = request.now.strftime('%H:%M:%S')
+        
         if confirmar.accepts(request.vars, session):
-            session.flash = 'Certificado Liberado para Download'
+            session.flash = 'Registro atualizado'
             redirect(URL('organizacao', 'listar'))
 
         return dict(confirmar=confirmar, usuarios=check_user, certificado=None)
@@ -160,7 +184,7 @@ def checkin():
 def lista_vazia():
     """
     Renderiza uma tabela vazia em PDF para preenchimento manual de todos os dados
-    Plugin: Appreport - Lucas D'Avilla
+    Plugin: Appreport by Lucas D'Avilla
     """
     html = response.render('organizacao/lista_vazia.html')
     return plugin_appreport.REPORT(html = html)
@@ -170,7 +194,7 @@ def lista_participante():
     """
     Essa função retorna uma página e um formulário para escolher se deseja imprimir o total de participantes ou
     apenas a partir de um determinado ID.
-    Plugin: Appreport - Lucas D'Avilla
+    Plugin: Appreport by Lucas D'Avilla
     """
     form = FORM('Informe o ID: ', INPUT(_name='inscricao', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
 
@@ -182,7 +206,7 @@ def lista_participante():
 def lista_todos():
     """
     Essa função renderiza o arquivo PDF com todos os participantes inscritos no evento
-    Plugin: Appreport - Lucas D'Avilla
+    Plugin: Appreport by Lucas D'Avilla
     """
     participantes = db(db.usuarios.grupo==2).select()
     html = response.render('organizacao/lista_todos.html', dict(participantes = participantes))
@@ -192,7 +216,7 @@ def lista_todos():
 def lista_apartir():
     """
     Essa função renderiza o arquivo PDF com os participantes inscritos no evento a partir de um ID.
-    Plugin: Appreport - Lucas D'AvillaPlugin: Appreport - Lucas D'Avilla
+    Plugin: Appreport by Lucas D'Avilla
     """
     apartir = request.args(0) or redirect(URL('organizacao', 'listar'))
     participantes = db((db.usuarios.grupo==2) & (db.usuarios.id>=apartir)).select()
