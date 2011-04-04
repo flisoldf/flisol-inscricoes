@@ -42,7 +42,8 @@ if 'auth' in globals():
                         (T('Usuario'), False, URL('usuarios','novo'), []),                    
                         (T('Inscritos'), False, URL('usuarios','lista', args=['inscritos']), []),
                         (T('Palestrantes'), False, URL('usuarios','lista', args=['palestrantes']), []),
-                        (T('Administradores'), False, URL('usuarios','lista', args=['administradores']), [])
+                        (T('Administradores'), False, URL('usuarios','lista', args=['administradores']), []),
+                        (T('Organização'), False, URL('usuarios', 'lista', args=['organizacao']), [])
                     ])                                  
 					]
         if auth.has_membership('Palestrante'):
@@ -63,6 +64,16 @@ if 'auth' in globals():
                         # Comentado pelo motivo de nao precisar de efetuar o cadastro de atividades nessa edicao
                         # (T('Atividades'), False, URL(request.application,'participante','atividades'), []),
                         (T('Certificados'), False, URL(request.application,'participante','certificados'), [])
-                        ]                
+                        ]
+        if auth.has_membership('Organização'):
+            response.menu = [
+                (T('Listar Inscritos'), False, URL(request.application, 'organizacao', 'listar'), []),
+                (T('Cadastrar Participante'), False, URL(request.application, 'organizacao', 'cadastro'), []),
+                (T('Imprimir'), False, URL(request.application, 'organizacao', 'imprimir'),
+                    [
+                    (T('Lista em Branco'), False, URL(request.application, 'organizacao', 'lista_vazia'), []),
+                    (T('Lista de Participantes'), False, URL(request.application, 'organizacao', 'lista_participante'), [])
+                    ])
+            ]
 
 
