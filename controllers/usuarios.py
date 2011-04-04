@@ -31,6 +31,11 @@ def lista():
                 (db.usuarios.grupo != 3) & (db.usuarios.grupo != 2)
         usuarios = db(query).select()
 
+    if request.args(0) == 'organizacao':
+        # Consultando membros da organização
+        query = (db.usuarios.id > 0) & (db.usuarios.grupo == 4)
+        usuarios = db(query).select()
+
     return dict(usuarios=usuarios,tipo_usuario=request.args(0))
     
 
@@ -61,6 +66,8 @@ def novo():
             redirect(URL('usuarios','lista',args=['palestrantes']))
         elif request.vars.grupo == 1:
             redirect(URL('usuarios','lista',args=['administradores']))
+        elif request.vars.grupo == 4:
+            redirect(URL('usuarios', 'lista', args=['organizacao']))
     elif form.errors:
         session.flash = "Erro ao cadastrar o Usuário"
             
@@ -84,6 +91,7 @@ def editar():
     
     if form.accepts(request.vars,session):
         session.flash = "Usuário cadastrado com sucesso."
+
     elif form.errors:
         session.flash = "Erro ao cadastrar o usuário. Tente novamente."
     
