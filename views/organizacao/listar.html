@@ -1,0 +1,51 @@
+{{ extend 'layout.html' }}
+
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    //DataTable
+    jQuery("#table_usuarios").dataTable();
+  });
+</script>
+
+<table class="display" id="table_usuarios">
+    <thead>
+        <tr>
+            <th>ID Inscrição</th>
+            <th>Opções</th>
+            <th>Nome do Usuário</th>
+            <th>Login de Acesso</th>
+            <th>Email</th>
+            <th>Perfil</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{ for usuario in usuarios: }}
+            <tr>
+                <td width="50px">{{=usuario.id}}</td>
+                <td width="150px">
+                    {{ if confirmacao.__contains__(usuario.id): }}
+                    <a href="{{=URL('organizacao','checkin',args=[usuario.id])}}">
+                        <img src="{{=URL('static','images/ok.png')}}" alt="Liberar Certificado" title="Liberar Certificado"/>
+                        Liberar Certificado
+                    </a>
+                    {{ else: }}
+                    <a href="{{=URL('organizacao','checkin',args=[usuario.id])}}">
+                        <img src="{{=URL('static','images/ok.png')}}" alt="Check-in do usuário" title="Check-in do usuário"/>
+                        Check-in
+                    </a>
+                    {{ pass }}
+                    <br />
+                    <a href="{{=URL('organizacao', 'editar', args=[usuario.id])}}">
+                        <img src="{{=URL('static','images/edit_entries.png')}}" alt="Editar usuário" title="Editar usuário"/>
+                        Editar
+                    </a>
+                    
+                </td>
+                <td>{{=usuario.first_name}}</td>
+                <td>{{=usuario.username}}</td>
+                <td>{{=usuario.email}}</td>
+                <td>{{=usuario.grupo.role}}</td>
+            </tr>
+        {{ pass }}
+    </tbody>
+</table>

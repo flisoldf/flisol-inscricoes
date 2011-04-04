@@ -1,0 +1,17 @@
+{{ extend 'layout.html' }}
+
+<center>
+    <h3><i>{{=usuarios[0].first_name}}</i></h3>
+
+
+{{ if certificado: }}
+
+{{ =certificado }}
+
+{{ else: }}
+
+{{ =confirmar }}
+
+{{ pass }}
+
+</center>
