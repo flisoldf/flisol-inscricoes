@@ -22,6 +22,8 @@ def index():
             redirect(URL('admin','dashboard'))
         if auth.has_membership('Participante'):
             redirect(URL('participante', 'index'))
+        if auth.has_membership('Organização'):
+            redirect(URL('organizacao', 'listar'))
     else:
         redirect(URL('default','user',args='register'))
     
