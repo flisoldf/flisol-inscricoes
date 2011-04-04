@@ -68,7 +68,7 @@ auth.settings.create_user_groups = False
 
 ### Carga inicial de grupos
 ### Caso os grupos nao foram cadastrados, sao inseridos automaticamente
-papeis = ('Administrador','Participante','Palestrante')
+papeis = ('Administrador','Participante','Palestrante', 'Organização')
 
 for papel in papeis:
     grupo = db(db.grupos.role == papel).select().first()
@@ -100,13 +100,7 @@ custom_auth_table.first_name.requires = IS_NOT_EMPTY(error_message= T('is_empty'
 custom_auth_table.username.requires = [
             IS_NOT_EMPTY(error_message = T('is_empty')),
             IS_NOT_IN_DB(db, custom_auth_table.username, T('login_already'))]
-custom_auth_table.password.requires = [
-            # Especifica a complexidade da senha
-            # minimo = 6
-            # caracteres especiais = 0 (nenhum)
-            # caracteres em maiusculo = 0 (nenhum)
-            IS_STRONG(min = 6, special = 0, upper = 0, invalid=' "', error_message = T('error_password')),CRYPT()]
-custom_auth_table.email.requires = [IS_EMAIL(error_message=auth.messages.invalid_email)]
+custom_auth_table.password.requires = CRYPT()
             
 # Rotulo dos campos
 custom_auth_table.first_name.label = T('Name')
@@ -183,8 +177,8 @@ if 'auth' in globals():
             custom_auth_table.grupo.requires = IS_IN_DB(db,'grupos.id', 'grupos.role',
                 zero=T('escolha_grupo'), error_message=T('is_choose'))
     else:
-        query = db.grupos.role != 'Administrador'
-        # query = (db.grupos.role != 'Administrador') & (db.grupos.role != 'Participante')
+        # query = db.grupos.role != 'Administrador'
+        query = (db.grupos.role != 'Administrador') & (db.grupos.role != 'Organização')
         custom_auth_table.grupo.requires = IS_IN_DB(db(query),
             'grupos.id', 'grupos.role', zero=T('escolha_grupo'), error_message=T('is_choose'))        
 
@@ -385,3 +379,17 @@ questionario = db.define_table('questionario',
 
 # Validadores da tabela Questionario
 """
+
+###########################################
+# Tabela - Checkin de Usuários            #
+###########################################
+
+checkin = db.define_table('checkin',
+                   Field('id_usuario', db.usuarios),
+                   Field('hora_checkin', 'time'),
+                   Field('certificado', 'boolean', default=False, label='Liberar Certificado')
+                   )
+
+checkin.id_usuario.requires = IS_IN_DB(db, db.usuarios.id)
+checkin.hora_checkin.requires = IS_EMPTY_OR(IS_TIME())
+
