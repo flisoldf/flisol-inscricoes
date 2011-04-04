@@ -503,3 +503,36 @@ div#tipo_imprimir ul li {
     margin: 10px;
     padding: 10px;
 }
+
+/* Renderização da legenda da tabela de listar inscritos do módulo organização */
+div#legenda_tabela{
+    width: 40%;
+}
+
+div#legenda_tabela h4 {
+    text-align: center;
+}
+
+div#legenda_tabela ul li {
+    list-style: none;
+    display: block;
+    padding-left: 25px;
+}
+
+div#legenda_tabela ul li.um {
+    background-image: url("../images/warn.png");
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+div#legenda_tabela ul li.dois {
+    background-image: url("../images/status.png");
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+div#legenda_tabela ul li.tres {
+    background-image: url("../images/ok.png");
+    background-repeat: no-repeat;
+    background-position: left;
+}
