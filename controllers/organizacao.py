@@ -55,6 +55,10 @@ def editar():
 
 @auth.requires_membership('Organização')
 def listar():
+    """
+    Lista os usuários inscritos no evento e fornece a opção de realizar o checkin
+    e/ou liberar o certificado após o tempo pré-estabelecido
+    """
 
     # Consulta os usuários inscritos no evento
     query = (db.usuarios.id > 0) & (db.usuarios.grupo == 2)
@@ -151,3 +155,46 @@ def checkin():
             redirect(URL('organizacao', 'listar'))
 
         return dict(confirmar=confirmar, usuarios=check_user, certificado=None)
+
+@auth.requires(auth.has_membership('Administrador') or auth.has_membership('Organização'))
+def lista_vazia():
+    """
+    Renderiza uma tabela vazia em PDF para preenchimento manual de todos os dados
+    Plugin: Appreport - Lucas D'Avilla
+    """
+    html = response.render('organizacao/lista_vazia.html')
+    return plugin_appreport.REPORT(html = html)
+
+@auth.requires(auth.has_membership('Administrador') or auth.has_membership('Organização'))
+def lista_participante():
+    """
+    Essa função retorna uma página e um formulário para escolher se deseja imprimir o total de participantes ou
+    apenas a partir de um determinado ID.
+    Plugin: Appreport - Lucas D'Avilla
+    """
+    form = FORM('Informe o ID: ', INPUT(_name='inscricao', requires=IS_NOT_EMPTY()), INPUT(_type='submit'))
+
+    if form.accepts(request.vars, session):
+        redirect(URL('organizacao', 'lista_apartir', args=[request.vars.inscricao]))
+    return dict(form=form)
+
+@auth.requires(auth.has_membership('Administrador') or auth.has_membership('Organização'))
+def lista_todos():
+    """
+    Essa função renderiza o arquivo PDF com todos os participantes inscritos no evento
+    Plugin: Appreport - Lucas D'Avilla
+    """
+    participantes = db(db.usuarios.grupo==2).select()
+    html = response.render('organizacao/lista_todos.html', dict(participantes = participantes))
+    return plugin_appreport.REPORT(html = html)
+
+@auth.requires(auth.has_membership('Administrador') or auth.has_membership('Organização'))
+def lista_apartir():
+    """
+    Essa função renderiza o arquivo PDF com os participantes inscritos no evento a partir de um ID.
+    Plugin: Appreport - Lucas D'AvillaPlugin: Appreport - Lucas D'Avilla
+    """
+    apartir = request.args(0) or redirect(URL('organizacao', 'listar'))
+    participantes = db((db.usuarios.grupo==2) & (db.usuarios.id>=apartir)).select()
+    html = response.render('organizacao/lista_todos.html', dict(participantes = participantes))
+    return plugin_appreport.REPORT(html = html)
