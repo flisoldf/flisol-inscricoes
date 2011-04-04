@@ -385,11 +385,11 @@ questionario = db.define_table('questionario',
 ###########################################
 
 checkin = db.define_table('checkin',
-                   Field('id_usuario', db.usuarios),
+                   Field('id_usuario', db.usuarios, unique=True),
                    Field('hora_checkin', 'time'),
                    Field('certificado', 'boolean', default=False, label='Liberar Certificado')
                    )
 
 checkin.id_usuario.requires = IS_IN_DB(db, db.usuarios.id)
+checkin.id_usuario.requires = IS_NOT_IN_DB(db, 'checkin.id_usuario')
 checkin.hora_checkin.requires = IS_EMPTY_OR(IS_TIME())
-
