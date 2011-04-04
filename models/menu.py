@@ -44,8 +44,13 @@ if 'auth' in globals():
                         (T('Palestrantes'), False, URL('usuarios','lista', args=['palestrantes']), []),
                         (T('Administradores'), False, URL('usuarios','lista', args=['administradores']), []),
                         (T('Organização'), False, URL('usuarios', 'lista', args=['organizacao']), [])
-                    ])                                  
-					]
+                    ]),
+                    (T('Imprimir'), False, None,
+                    [
+                        (T('Lista em Branco'), False, URL(request.application, 'organizacao', 'lista_vazia'), []),
+                        (T('Lista de Participantes'), False, URL(request.application, 'organizacao', 'lista_participante'), [])
+                    ])
+		]
         if auth.has_membership('Palestrante'):
             if hoje <= prazo_atividade:
                 response.menu = [
