@@ -32,9 +32,13 @@
             <tr>
                 <td><a href="{{=URL('usuarios','editar',args=[usuario.id])}}">Editar</a></td>
                 <td>
+                    {{ if session.auth.user.grupo == 4: }}
+                        {{=usuario.first_name}}
+                    {{ else: }}
                     <a class="usuario" href="{{=URL('usuarios','detalhes',args=[usuario.id])}}">
                         {{=usuario.first_name}}
                     </a>
+                    {{ pass }}
                 </td>
                 <td>{{=usuario.username}}</td>
                 <td>{{=usuario.email}}</td>
