@@ -480,3 +480,26 @@ div.error {
   h2, h3{ page-break-after: avoid; }
 }
 
+/* CSS da emissão da lista de participantes em PDF */
+
+div#tipo_imprimir {
+    width: 50%;
+    margin: 20px auto;
+}
+
+div#tipo_imprimir ul li {
+    list-style: none;
+    padding: 0 10px;
+    float: left;
+    width: 45%;
+    margin: 0 auto;
+}
+
+.apartir {
+    clear: both;
+    width: 45%;
+    position: relative;
+    top: 20px;
+    margin: 10px;
+    padding: 10px;
+}
