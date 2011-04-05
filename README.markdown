@@ -11,3 +11,5 @@ Algumas das funcionalidades abaixo:
  - Cadastro de Locais usados para o evento;
  - Cadastro de horários nos eventos;
  - Lista de usuários cadastrados, na visão do Administrador. Separado por inscritos, palestrantes e também administradores;
+
+#### Esse sistema está sobre a licença LGPL versão 3
