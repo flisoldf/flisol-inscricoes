@@ -136,3 +136,10 @@ def questionario():
     Essa função retorna o questionário tecnológico, para preenchimento obrigatório no primeiro login.
     """
     return dict()
+
+def inscritos():
+    """
+    Função para gerar uma página com a quantidade total de inscritos no evento.
+    """
+    total = db(db.usuarios.id>0).count()
+    return dict(total=total)
