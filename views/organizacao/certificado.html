@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Certificado - {{=request.application}}</title>
+        <link rel="stylesheet" href="{{=URL(request.application, 'static', 'css/base.css')}}" />
+    </head>
+    <body>
+        
+        <div class="certificado">
+            <img src={{='http://%s%s' %(request.env.http_host, URL('static', 'images/certificado_flisol_participante.png'))}} />
+        </div>
+        <div class="participante">
+	    <h2>Nome do Participante aqui</h2>
+        </div>
+        
+        <!--
+        <div>
+            <img src={{='http://%s%s' %(request.env.http_host, URL('static', 'images/certificado_flisol_participante_1.png'))}} />
+                 <h2 align="center" style="color: black">Nome do Meliante aqui</h2>
+            <img src={{='http://%s%s' %(request.env.http_host, URL('static', 'images/certificado_flisol_participante_2.png'))}} />
+        </div>
+        -->
+    </body>
+</html>
