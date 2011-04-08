@@ -536,3 +536,16 @@ div#legenda_tabela ul li.tres {
     background-repeat: no-repeat;
     background-position: left;
 }
+
+div.certificado {
+    position: absolute
+}
+
+div.participante {
+    position: absolute;
+    top: 340px;
+    left: 150px;
+    width: 60%;
+    color: black;
+    text-align: center;
+}
