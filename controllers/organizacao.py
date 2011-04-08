@@ -182,3 +182,14 @@ def lista_apartir():
     participantes = db((db.usuarios.grupo==2) & (db.usuarios.id>=apartir)).select()
     html = response.render('organizacao/lista_todos.html', dict(participantes = participantes))
     return plugin_appreport.REPORT(html = html)
+
+def certificado():
+    html = response.render('organizacao/certificado.html')
+
+    # Caso queria apenas visualizar a página, descomente a linha abaixo e comente o outro return
+    return dict()
+    
+    # Esse retorno é para gerar o PDF
+    #return plugin_appreport.REPORT(html = html, orientation="landscape")
+
+    
